@@ -1,0 +1,6 @@
+@TripleTBE_HostAddress = http://localhost:5200
+
+GET {{TripleTBE_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
