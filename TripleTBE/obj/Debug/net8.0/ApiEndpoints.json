@@ -413,11 +413,6 @@
         "IsRequired": false
       },
       {
-        "Name": "User.Username",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
         "Name": "User.Email",
         "Type": "System.String",
         "IsRequired": false
@@ -470,11 +465,6 @@
       {
         "Name": "User.Cart.User.UserId",
         "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "User.Cart.User.Username",
-        "Type": "System.String",
         "IsRequired": false
       },
       {
@@ -555,11 +545,6 @@
       {
         "Name": "User.Cart.User.UserProfile.User.UserId",
         "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "User.Cart.User.UserProfile.User.Username",
-        "Type": "System.String",
         "IsRequired": false
       },
       {
@@ -663,11 +648,6 @@
         "IsRequired": false
       },
       {
-        "Name": "User.UserProfile.User.Username",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
         "Name": "User.UserProfile.User.Email",
         "Type": "System.String",
         "IsRequired": false
@@ -720,11 +700,6 @@
       {
         "Name": "User.UserProfile.User.Cart.User.UserId",
         "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "User.UserProfile.User.Cart.User.Username",
-        "Type": "System.String",
         "IsRequired": false
       },
       {
@@ -875,11 +850,6 @@
         "IsRequired": false
       },
       {
-        "Name": "User.Username",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
         "Name": "User.Email",
         "Type": "System.String",
         "IsRequired": false
@@ -932,11 +902,6 @@
       {
         "Name": "User.Cart.User.UserId",
         "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "User.Cart.User.Username",
-        "Type": "System.String",
         "IsRequired": false
       },
       {
@@ -1017,11 +982,6 @@
       {
         "Name": "User.Cart.User.UserProfile.User.UserId",
         "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "User.Cart.User.UserProfile.User.Username",
-        "Type": "System.String",
         "IsRequired": false
       },
       {
@@ -1125,11 +1085,6 @@
         "IsRequired": false
       },
       {
-        "Name": "User.UserProfile.User.Username",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
         "Name": "User.UserProfile.User.Email",
         "Type": "System.String",
         "IsRequired": false
@@ -1182,11 +1137,6 @@
       {
         "Name": "User.UserProfile.User.Cart.User.UserId",
         "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "User.UserProfile.User.Cart.User.Username",
-        "Type": "System.String",
         "IsRequired": false
       },
       {
@@ -1638,16 +1588,6 @@
         "IsRequired": false
       },
       {
-        "Name": "Price",
-        "Type": "System.Decimal",
-        "IsRequired": false
-      },
-      {
-        "Name": "Stock",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
         "Name": "Description",
         "Type": "System.String",
         "IsRequired": false
@@ -1660,6 +1600,11 @@
       {
         "Name": "CategoryId",
         "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Status",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       },
       {
@@ -1710,16 +1655,6 @@
         "IsRequired": false
       },
       {
-        "Name": "Price",
-        "Type": "System.Decimal",
-        "IsRequired": false
-      },
-      {
-        "Name": "Stock",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
         "Name": "Description",
         "Type": "System.String",
         "IsRequired": false
@@ -1732,6 +1667,11 @@
       {
         "Name": "CategoryId",
         "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Status",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       },
       {

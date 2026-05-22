@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace TripleTBE.Models;
 
@@ -10,7 +8,8 @@ public partial class BadmintonStoreDbContext : DbContext
     {
     }
 
-    public BadmintonStoreDbContext(DbContextOptions<BadmintonStoreDbContext> options)
+    public BadmintonStoreDbContext(
+        DbContextOptions<BadmintonStoreDbContext> options)
         : base(options)
     {
     }
@@ -43,157 +42,282 @@ public partial class BadmintonStoreDbContext : DbContext
 
     public virtual DbSet<UserProfile> UserProfiles { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=.;Database=BadmintonStoreDB;Trusted_Connection=True;TrustServerCertificate=True;");
+    protected override void OnConfiguring(
+        DbContextOptionsBuilder optionsBuilder)
+#warning Move connection string to appsettings.json
+        => optionsBuilder.UseSqlServer(
+            "Server=.;Database=BadmintonStoreDB;Trusted_Connection=True;TrustServerCertificate=True;"
+        );
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+
+        /* =========================================================
+           BRAND
+        ========================================================= */
+
         modelBuilder.Entity<Brand>(entity =>
         {
-            entity.HasKey(e => e.BrandId).HasName("PK__Brands__DAD4F05E0E0CA332");
+            entity.HasKey(e => e.BrandId);
 
-            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())");
         });
 
-        modelBuilder.Entity<Cart>(entity =>
-        {
-            entity.HasKey(e => e.CartId).HasName("PK__Carts__51BCD7B78F2FC02B");
-
-            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
-
-            entity.HasOne(d => d.User).WithOne(p => p.Cart).HasConstraintName("FK__Carts__UserId__6B24EA82");
-        });
-
-        modelBuilder.Entity<CartItem>(entity =>
-        {
-            entity.HasKey(e => e.CartItemId).HasName("PK__CartItem__488B0B0AD313BB2B");
-
-            entity.Property(e => e.Quantity).HasDefaultValue(1);
-
-            entity.HasOne(d => d.Cart).WithMany(p => p.CartItems).HasConstraintName("FK__CartItems__CartI__6EF57B66");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.CartItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__CartItems__Produ__6FE99F9F");
-
-            entity.HasOne(d => d.Variant).WithMany(p => p.CartItems).HasConstraintName("FK__CartItems__Varia__70DDC3D8");
-        });
+        /* =========================================================
+           CATEGORY
+        ========================================================= */
 
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.CategoryId).HasName("PK__Categori__19093A0B7DDF95C8");
+            entity.HasKey(e => e.CategoryId);
         });
 
-        modelBuilder.Entity<News>(entity =>
-        {
-            entity.HasKey(e => e.NewsId).HasName("PK__News__954EBDF351B9A588");
-
-            entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
-
-            entity.HasOne(d => d.User).WithMany(p => p.News)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__News__UserId__07C12930");
-        });
-
-        modelBuilder.Entity<Order>(entity =>
-        {
-            entity.HasKey(e => e.OrderId).HasName("PK__Orders__C3905BCF08339FEA");
-
-            entity.Property(e => e.OrderDate).HasDefaultValueSql("(getdate())");
-            entity.Property(e => e.OrderStatus).HasDefaultValue("Pending");
-            entity.Property(e => e.TotalAmount).HasDefaultValue(0m);
-
-            entity.HasOne(d => d.User).WithMany(p => p.Orders)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Orders__UserId__76969D2E");
-        });
-
-        modelBuilder.Entity<OrderDetail>(entity =>
-        {
-            entity.HasKey(e => e.OrderDetailId).HasName("PK__OrderDet__D3B9D36C96E8653A");
-
-            entity.Property(e => e.TotalPrice).HasComputedColumnSql("([Quantity]*[UnitPrice])", false);
-
-            entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails).HasConstraintName("FK__OrderDeta__Order__797309D9");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.OrderDetails)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__OrderDeta__Produ__7A672E12");
-
-            entity.HasOne(d => d.Variant).WithMany(p => p.OrderDetails).HasConstraintName("FK__OrderDeta__Varia__7B5B524B");
-        });
-
-        modelBuilder.Entity<Payment>(entity =>
-        {
-            entity.HasKey(e => e.PaymentId).HasName("PK__Payments__9B556A383C14BDB7");
-
-            entity.HasOne(d => d.Order).WithMany(p => p.Payments).HasConstraintName("FK__Payments__OrderI__7E37BEF6");
-        });
-
-        modelBuilder.Entity<Product>(entity =>
-        {
-            entity.HasKey(e => e.ProductId).HasName("PK__Products__B40CC6CD72172B69");
-
-            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
-            entity.Property(e => e.Stock).HasDefaultValue(0);
-            entity.Property(e => e.UpdatedAt).HasDefaultValueSql("(getdate())");
-
-            entity.HasOne(d => d.Brand).WithMany(p => p.Products)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Products__BrandI__5FB337D6");
-
-            entity.HasOne(d => d.Category).WithMany(p => p.Products)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Products__Catego__5EBF139D");
-        });
-
-        modelBuilder.Entity<ProductImage>(entity =>
-        {
-            entity.HasKey(e => e.ImageId).HasName("PK__ProductI__7516F70CA7F45F68");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.ProductImages).HasConstraintName("FK__ProductIm__Produ__628FA481");
-        });
-
-        modelBuilder.Entity<ProductVariant>(entity =>
-        {
-            entity.HasKey(e => e.VariantId).HasName("PK__ProductV__0EA233847E206C24");
-
-            entity.Property(e => e.Quantity).HasDefaultValue(0);
-
-            entity.HasOne(d => d.Product).WithMany(p => p.ProductVariants).HasConstraintName("FK__ProductVa__Produ__66603565");
-        });
-
-        modelBuilder.Entity<Review>(entity =>
-        {
-            entity.HasKey(e => e.ReviewId).HasName("PK__Reviews__74BC79CEC5D18CDE");
-
-            entity.Property(e => e.ReviewDate).HasDefaultValueSql("(getdate())");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.Reviews).HasConstraintName("FK__Reviews__Product__03F0984C");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Reviews)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Reviews__UserId__02FC7413");
-        });
+        /* =========================================================
+           USER
+        ========================================================= */
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__Users__1788CC4C5EB5E556");
+            entity.HasKey(e => e.UserId);
 
-            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
-            entity.Property(e => e.Role).HasDefaultValue("Customer");
-            entity.Property(e => e.Status).HasDefaultValue("Active");
-            entity.Property(e => e.UpdatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())");
+
+            entity.Property(e => e.UpdatedAt)
+                .HasDefaultValueSql("(getdate())");
+
+            entity.Property(e => e.Role)
+                .HasDefaultValue("Customer");
+
+            entity.Property(e => e.Status)
+                .HasDefaultValue("Active");
         });
+
+        /* =========================================================
+           USER PROFILE
+        ========================================================= */
 
         modelBuilder.Entity<UserProfile>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__UserProf__1788CC4CAE3B4798");
+            entity.HasKey(e => e.UserId);
 
-            entity.Property(e => e.UserId).ValueGeneratedNever();
+            entity.Property(e => e.UserId)
+                .ValueGeneratedNever();
 
-            entity.HasOne(d => d.User).WithOne(p => p.UserProfile).HasConstraintName("FK__UserProfi__UserI__52593CB8");
+            entity.HasOne(d => d.User)
+                .WithOne(p => p.UserProfile)
+                .HasForeignKey<UserProfile>(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        /* =========================================================
+           PRODUCT
+        ========================================================= */
+
+        modelBuilder.Entity<Product>(entity =>
+        {
+            entity.HasKey(e => e.ProductId);
+
+            entity.HasIndex(e => new
+            {
+                e.CategoryId,
+                e.BrandId
+            });
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())");
+
+            entity.Property(e => e.UpdatedAt)
+                .HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.Brand)
+                .WithMany(p => p.Products)
+                .HasForeignKey(d => d.BrandId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.Category)
+                .WithMany(p => p.Products)
+                .HasForeignKey(d => d.CategoryId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        /* =========================================================
+           PRODUCT IMAGE
+        ========================================================= */
+
+        modelBuilder.Entity<ProductImage>(entity =>
+        {
+            entity.HasKey(e => e.ImageId);
+
+            entity.HasOne(d => d.Product)
+                .WithMany(p => p.ProductImages)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        /* =========================================================
+           PRODUCT VARIANT
+        ========================================================= */
+
+        modelBuilder.Entity<ProductVariant>(entity =>
+        {
+            entity.HasKey(e => e.VariantId);
+
+            entity.Property(e => e.Price)
+                .HasColumnType("decimal(18,2)");
+
+            entity.Property(e => e.Stock)
+                .HasDefaultValue(0);
+
+            entity.HasIndex(e => e.SKU)
+                .IsUnique();
+
+            entity.HasOne(d => d.Product)
+                .WithMany(p => p.ProductVariants)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        /* =========================================================
+           CART
+        ========================================================= */
+
+        modelBuilder.Entity<Cart>(entity =>
+        {
+            entity.HasKey(e => e.CartId);
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.User)
+                .WithOne(p => p.Cart)
+                .HasForeignKey<Cart>(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        /* =========================================================
+           CART ITEM
+        ========================================================= */
+
+        modelBuilder.Entity<CartItem>(entity =>
+        {
+            entity.HasKey(e => e.CartItemId);
+
+            entity.Property(e => e.Quantity)
+                .HasDefaultValue(1);
+
+            entity.HasOne(d => d.Cart)
+                .WithMany(p => p.CartItems)
+                .HasForeignKey(d => d.CartId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(d => d.Variant)
+                .WithMany(p => p.CartItems)
+                .HasForeignKey(d => d.VariantId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        /* =========================================================
+           ORDER
+        ========================================================= */
+
+        modelBuilder.Entity<Order>(entity =>
+        {
+            entity.HasKey(e => e.OrderId);
+
+            entity.Property(e => e.OrderDate)
+                .HasDefaultValueSql("(getdate())");
+
+            entity.Property(e => e.OrderStatus)
+                .HasDefaultValue("Pending");
+
+            entity.Property(e => e.TotalAmount)
+       .HasColumnType("decimal(18,2)")
+       .HasDefaultValue(0m);
+
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.Orders)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        /* =========================================================
+           ORDER DETAIL
+        ========================================================= */
+
+        modelBuilder.Entity<OrderDetail>(entity =>
+        {
+            entity.HasKey(e => e.OrderDetailId);
+
+            entity.Property(e => e.UnitPrice)
+                .HasColumnType("decimal(18,2)");
+
+            entity.Property(e => e.TotalPrice)
+                .HasComputedColumnSql("([Quantity]*[UnitPrice])", false);
+
+            entity.HasOne(d => d.Order)
+                .WithMany(p => p.OrderDetails)
+                .HasForeignKey(d => d.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(d => d.Variant)
+                .WithMany(p => p.OrderDetails)
+                .HasForeignKey(d => d.VariantId)
+                .OnDelete(DeleteBehavior.NoAction);
+        });
+
+        /* =========================================================
+           PAYMENT
+        ========================================================= */
+
+        modelBuilder.Entity<Payment>(entity =>
+        {
+            entity.HasKey(e => e.PaymentId);
+
+            entity.HasOne(d => d.Order)
+                .WithMany(p => p.Payments)
+                .HasForeignKey(d => d.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        /* =========================================================
+           REVIEW
+        ========================================================= */
+
+        modelBuilder.Entity<Review>(entity =>
+        {
+            entity.HasKey(e => e.ReviewId);
+
+            entity.Property(e => e.ReviewDate)
+                .HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.Product)
+                .WithMany(p => p.Reviews)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.Reviews)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        /* =========================================================
+           NEWS
+        ========================================================= */
+
+        modelBuilder.Entity<News>(entity =>
+        {
+            entity.HasKey(e => e.NewsId);
+
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.News)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         OnModelCreatingPartial(modelBuilder);

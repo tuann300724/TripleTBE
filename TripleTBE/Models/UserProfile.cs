@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 
 namespace TripleTBE.Models;
@@ -27,5 +28,6 @@ public partial class UserProfile
 
     [ForeignKey("UserId")]
     [InverseProperty("UserProfile")]
-    public virtual User User { get; set; } = null!;
+    [JsonIgnore]
+    public virtual User? User { get; set; } = null!;
 }

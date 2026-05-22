@@ -26,75 +26,105 @@ namespace TripleTBE.Repositories
         public async Task<List<ProductDTOs>> GetAllAsync()
         {
             return await _context.Products
-       .Include(p => p.Brand)
-       .Include(p => p.Category)
-       .Include(p => p.ProductImages)
-       .Select(p => new ProductDTOs
-       {
-           ProductId = p.ProductId,
-           ProductName = p.ProductName,
-           Price = p.Price,
-           Stock = p.Stock,
-           Description = p.Description,
-           Thumbnail = p.Thumbnail,
-           Status = p.Status,
-           BrandName = p.Brand.BrandName,
-           Country = p.Brand.Country,
-           Logo = p.Brand.Logo,
-           CategoryName = p.Category.CategoryName,
+                .Include(p => p.Brand)
+                .Include(p => p.Category)
+                .Include(p => p.ProductImages)
+                .Include(p => p.ProductVariants)
+                .Select(p => new ProductDTOs
+                {
+                    ProductId = p.ProductId,
 
-           Images = p.ProductImages
-               .Select(i => i.ImageUrl)
-               .ToList()
-       })
-       .ToListAsync();
+                    ProductName = p.ProductName,
+
+                    Description = p.Description,
+
+                    Thumbnail = p.Thumbnail,
+
+                    Status = p.Status,
+
+                    MinPrice = p.ProductVariants
+                        .Min(v => (decimal?)v.Price),
+
+                    MaxPrice = p.ProductVariants
+                        .Max(v => (decimal?)v.Price),
+
+                    BrandName = p.Brand.BrandName,
+
+                    Country = p.Brand.Country,
+
+                    Logo = p.Brand.Logo,
+
+                    CategoryName = p.Category.CategoryName,
+
+                    Images = p.ProductImages
+                        .Select(i => i.ImageUrl)
+                        .ToList()
+                })
+                .ToListAsync();
         }
 
         // GET BY ID
         public async Task<ProductDTOs?> GetByIdAsync(int id)
         {
             return await _context.Products
-        .Include(p => p.Brand)
-        .Include(p => p.Category)
-        .Include(p => p.ProductImages)
-        .Where(p => p.ProductId == id)
-        .Select(p => new ProductDTOs
-        {
-            ProductId = p.ProductId,
-            ProductName = p.ProductName,
-            Price = p.Price,
-            Stock = p.Stock,
-            Description = p.Description,
-            Thumbnail = p.Thumbnail,
-            Status = p.Status,
-            BrandName = p.Brand.BrandName,
-            Country = p.Brand.Country,
-            Logo = p.Brand.Logo,
-            CategoryName = p.Category.CategoryName,
+                .Include(p => p.Brand)
+                .Include(p => p.Category)
+                .Include(p => p.ProductImages)
+                .Include(p => p.ProductVariants)
+                .Where(p => p.ProductId == id)
+                .Select(p => new ProductDTOs
+                {
+                    ProductId = p.ProductId,
 
-            Images = p.ProductImages
-                .Select(i => i.ImageUrl)
-                .ToList()
-        })
-        .FirstOrDefaultAsync();
+                    ProductName = p.ProductName,
+
+                    Description = p.Description,
+
+                    Thumbnail = p.Thumbnail,
+
+                    Status = p.Status,
+
+                    MinPrice = p.ProductVariants
+                        .Min(v => (decimal?)v.Price),
+
+                    MaxPrice = p.ProductVariants
+                        .Max(v => (decimal?)v.Price),
+
+                    BrandName = p.Brand.BrandName,
+
+                    Country = p.Brand.Country,
+
+                    Logo = p.Brand.Logo,
+
+                    CategoryName = p.Category.CategoryName,
+
+                    Images = p.ProductImages
+                        .Select(i => i.ImageUrl)
+                        .ToList()
+                })
+                .FirstOrDefaultAsync();
         }
 
-        // CREATE
         public async Task<ProductDTOs> CreateAsync(
-            Product product,
-            IFormFile? thumbnail,
-            List<IFormFile>? images)
+     Product product,
+     IFormFile? thumbnail,
+     List<IFormFile>? images)
         {
             var request = _httpContextAccessor.HttpContext!.Request;
 
-            // AUTO STATUS
-            product.Status = product.Stock > 0 ? 1 : 2;
+            product.CreatedAt = DateTime.Now;
+            product.UpdatedAt = DateTime.Now;
 
-            // thumbnail
+            if (product.Status == null)
+            {
+                product.Status = 1;
+            }
+
+            // THUMBNAIL
             if (thumbnail != null)
             {
                 var thumbName =
-                    Guid.NewGuid().ToString()
+                    Guid.NewGuid()
                     + Path.GetExtension(thumbnail.FileName);
 
                 var thumbPath = Path.Combine(
@@ -111,27 +141,27 @@ namespace TripleTBE.Repositories
                     $"{request.Scheme}://{request.Host}/images/products/{thumbName}";
             }
 
-            // nhiều ảnh
+            // IMAGES
             if (images != null && images.Any())
             {
                 foreach (var image in images)
                 {
-                    var fileName =
-                        Guid.NewGuid().ToString()
+                    var imageName =
+                        Guid.NewGuid()
                         + Path.GetExtension(image.FileName);
 
-                    var filePath = Path.Combine(
+                    var imagePath = Path.Combine(
                         _env.WebRootPath,
                         "images/products",
-                        fileName);
+                        imageName);
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    using (var stream = new FileStream(imagePath, FileMode.Create))
                     {
                         await image.CopyToAsync(stream);
                     }
 
                     var imageUrl =
-                        $"{request.Scheme}://{request.Host}/images/products/{fileName}";
+                        $"{request.Scheme}://{request.Host}/images/products/{imageName}";
 
                     product.ProductImages.Add(new ProductImage
                     {
@@ -144,21 +174,36 @@ namespace TripleTBE.Repositories
 
             await _context.SaveChangesAsync();
 
+            await _context.Entry(product)
+                .Reference(p => p.Brand)
+                .LoadAsync();
+
+            await _context.Entry(product)
+                .Reference(p => p.Category)
+                .LoadAsync();
+
             return new ProductDTOs
             {
                 ProductId = product.ProductId,
+
                 ProductName = product.ProductName,
-                Price = product.Price,
-                Stock = product.Stock,
+
                 Description = product.Description,
+
                 Thumbnail = product.Thumbnail,
+
                 Status = product.Status,
 
-                BrandName = "",
-                CategoryName = "",
+                BrandName = product.Brand.BrandName,
+
+                Country = product.Brand.Country,
+
+                Logo = product.Brand.Logo,
+
+                CategoryName = product.Category.CategoryName,
 
                 Images = product.ProductImages
-                    .Select(x => x.ImageUrl)
+                    .Select(i => i.ImageUrl)
                     .ToList()
             };
         }
@@ -175,28 +220,22 @@ namespace TripleTBE.Repositories
                 .Include(p => p.ProductImages)
                 .Include(p => p.Brand)
                 .Include(p => p.Category)
+                .Include(p => p.ProductVariants)
                 .FirstOrDefaultAsync(p => p.ProductId == id);
 
             if (product == null)
                 return null;
 
-            // UPDATE INFO
-            if (!string.IsNullOrEmpty(updatedProduct.ProductName))
+            /* =========================================
+               UPDATE INFO
+            ========================================= */
+
+            if (!string.IsNullOrWhiteSpace(updatedProduct.ProductName))
             {
                 product.ProductName = updatedProduct.ProductName;
             }
 
-            if (updatedProduct.Price > 0)
-            {
-                product.Price = updatedProduct.Price;
-            }
-
-            if (updatedProduct.Stock >= 0)
-            {
-                product.Stock = updatedProduct.Stock;
-            }
-
-            if (!string.IsNullOrEmpty(updatedProduct.Description))
+            if (!string.IsNullOrWhiteSpace(updatedProduct.Description))
             {
                 product.Description = updatedProduct.Description;
             }
@@ -210,22 +249,21 @@ namespace TripleTBE.Repositories
             {
                 product.CategoryId = updatedProduct.CategoryId;
             }
+
             if (updatedProduct.Status != null)
             {
-                // user tự chọn status
-                product.Status = updatedProduct.Status.Value;
+                product.Status = updatedProduct.Status;
             }
-            else
-            {
-                // tự động theo stock
-                product.Status = product.Stock > 0 ? 1 : 2;
-            }
-            product.UpdatedAt = DateTime.Now;         
 
-            // UPDATE THUMBNAIL
+            product.UpdatedAt = DateTime.Now;
+
+            /* =========================================
+               UPDATE THUMBNAIL
+            ========================================= */
+
             if (thumbnail != null)
             {
-                // DELETE OLD THUMBNAIL
+                // delete old thumbnail
                 if (!string.IsNullOrEmpty(product.Thumbnail))
                 {
                     var oldThumbnailName =
@@ -242,9 +280,9 @@ namespace TripleTBE.Repositories
                     }
                 }
 
-                // SAVE NEW THUMBNAIL
+                // save new thumbnail
                 var thumbnailName =
-                    Guid.NewGuid().ToString()
+                    Guid.NewGuid()
                     + Path.GetExtension(thumbnail.FileName);
 
                 var thumbnailPath = Path.Combine(
@@ -261,10 +299,13 @@ namespace TripleTBE.Repositories
                     $"{request.Scheme}://{request.Host}/images/products/{thumbnailName}";
             }
 
-            // UPDATE IMAGES
+            /* =========================================
+               UPDATE IMAGES
+            ========================================= */
+
             if (images != null && images.Any())
             {
-                // DELETE OLD IMAGES
+                // delete old images
                 foreach (var oldImage in product.ProductImages.ToList())
                 {
                     var oldImageName =
@@ -283,11 +324,11 @@ namespace TripleTBE.Repositories
                     _context.ProductImages.Remove(oldImage);
                 }
 
-                // ADD NEW IMAGES
+                // add new images
                 foreach (var image in images)
                 {
                     var imageName =
-                        Guid.NewGuid().ToString()
+                        Guid.NewGuid()
                         + Path.GetExtension(image.FileName);
 
                     var imagePath = Path.Combine(
@@ -312,7 +353,7 @@ namespace TripleTBE.Repositories
 
             await _context.SaveChangesAsync();
 
-            // LOAD LẠI BRAND CATEGORY
+            // reload
             await _context.Entry(product)
                 .Reference(p => p.Brand)
                 .LoadAsync();
@@ -324,14 +365,31 @@ namespace TripleTBE.Repositories
             return new ProductDTOs
             {
                 ProductId = product.ProductId,
+
                 ProductName = product.ProductName,
-                Price = product.Price,
-                Stock = product.Stock,
+
                 Description = product.Description,
+
                 Thumbnail = product.Thumbnail,
+
                 Status = product.Status,
 
+                MinPrice = product.ProductVariants
+                    .Any()
+                    ? product.ProductVariants.Min(v => v.Price)
+                    : null,
+
+                MaxPrice = product.ProductVariants
+                    .Any()
+                    ? product.ProductVariants.Max(v => v.Price)
+                    : null,
+
                 BrandName = product.Brand.BrandName,
+
+                Country = product.Brand.Country,
+
+                Logo = product.Brand.Logo,
+
                 CategoryName = product.Category.CategoryName,
 
                 Images = product.ProductImages
@@ -355,5 +413,5 @@ namespace TripleTBE.Repositories
             return true;
         }
     }
-    
+
 }

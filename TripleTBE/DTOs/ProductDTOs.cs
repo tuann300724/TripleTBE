@@ -6,18 +6,24 @@
 
         public string ProductName { get; set; } = null!;
 
-        public decimal Price { get; set; }
-        public int? Stock { get; set; }
-        public int? Status { get; set; }
         public string? Description { get; set; }
 
         public string? Thumbnail { get; set; }
-       
-        public List<string> Images { get; set; } = new();
+
+        public int? Status { get; set; }
+
+        public decimal? MinPrice { get; set; }
+
+        public decimal? MaxPrice { get; set; }
+
         public string BrandName { get; set; } = null!;
+
         public string Country { get; set; } = null!;
+
         public string Logo { get; set; } = null!;
 
         public string CategoryName { get; set; } = null!;
+
+        public List<string> Images { get; set; } = new();
     }
 }

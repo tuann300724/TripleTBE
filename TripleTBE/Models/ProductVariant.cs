@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+
 
 namespace TripleTBE.Models;
 
@@ -14,25 +13,31 @@ public partial class ProductVariant
 
     public int ProductId { get; set; }
 
-    [StringLength(50)]
     public string? Color { get; set; }
 
-    [StringLength(20)]
     public string? Size { get; set; }
 
-    [StringLength(100)]
     public string? Version { get; set; }
 
-    public int? Quantity { get; set; }
+    [Column(TypeName = "decimal(18,2)")]
+    public decimal Price { get; set; }
 
-    [InverseProperty("Variant")]
-    public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
+    public int Stock { get; set; }
 
-    [InverseProperty("Variant")]
-    public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
+    public string? SKU { get; set; }
 
-    [ForeignKey("ProductId")]
-    [InverseProperty("ProductVariants")]
+    // ===================== RELATION =====================
+
+    [ForeignKey(nameof(ProductId))]
     [JsonIgnore]
-    public virtual Product Product { get; set; } = null!;
+    [ValidateNever]
+    public virtual Product? Product { get; set; }
+
+    [JsonIgnore]
+    public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        = new List<OrderDetail>();
+
+    [JsonIgnore]
+    public virtual ICollection<CartItem> CartItems { get; set; }
+        = new List<CartItem>();
 }

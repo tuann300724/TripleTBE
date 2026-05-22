@@ -20,7 +20,6 @@ namespace TripleTBE.Controllers
         public async Task<IActionResult> GetAll()
         {
             var cartItems = await _context.CartItems
-                .Include(x => x.Product)
                 .Include(x => x.Variant)
                 .Include(x => x.Cart)
                 .ToListAsync();
@@ -33,7 +32,6 @@ namespace TripleTBE.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var cartItem = await _context.CartItems
-                .Include(x => x.Product)
                 .Include(x => x.Variant)
                 .Include(x => x.Cart)
                 .FirstOrDefaultAsync(x => x.CartItemId == id);
@@ -72,11 +70,6 @@ namespace TripleTBE.Controllers
             if (updatedCartItem.CartId > 0)
             {
                 cartItem.CartId = updatedCartItem.CartId;
-            }
-
-            if (updatedCartItem.ProductId > 0)
-            {
-                cartItem.ProductId = updatedCartItem.ProductId;
             }
 
             if (updatedCartItem.VariantId != null)

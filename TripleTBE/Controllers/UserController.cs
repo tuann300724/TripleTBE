@@ -27,7 +27,7 @@ namespace TripleTBE.Controllers
                 .Select(u => new
                 {
                     u.UserId,
-                    u.Username,
+                 
                     u.Email,
                     u.Role,
                     u.Status,
@@ -59,7 +59,7 @@ namespace TripleTBE.Controllers
                 .Select(u => new
                 {
                     u.UserId,
-                    u.Username,
+                 
                     u.Email,
                     u.Role,
                     u.Status,
@@ -84,10 +84,10 @@ namespace TripleTBE.Controllers
         {
             // check trùng username/email (DB bạn có UNIQUE)
             var exists = await _context.Users
-                .AnyAsync(x => x.Username == user.Username || x.Email == user.Email);
+                .AnyAsync(x =>  x.Email == user.Email);
 
             if (exists)
-                return BadRequest("Username hoặc Email đã tồn tại");
+                return BadRequest("Email đã tồn tại");
 
             user.CreatedAt = DateTime.Now;
             user.UpdatedAt = DateTime.Now;
@@ -109,7 +109,7 @@ namespace TripleTBE.Controllers
             if (user == null)
                 return NotFound("User không tồn tại");
 
-            user.Username = input.Username;
+           
             user.Email = input.Email;
             user.Role = input.Role;
             user.Status = input.Status;

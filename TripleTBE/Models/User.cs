@@ -7,16 +7,11 @@ using System.Text.Json.Serialization;
 
 namespace TripleTBE.Models;
 
-[Index("Username", Name = "UQ__Users__536C85E47FD7CEC7", IsUnique = true)]
 [Index("Email", Name = "UQ__Users__A9D10534DD2F8A91", IsUnique = true)]
 public partial class User
 {
     [Key]
     public int UserId { get; set; }
-
-    [StringLength(50)]
-    [Unicode(false)]
-    public string Username { get; set; } = null!;
 
     [StringLength(100)]
     [Unicode(false)]
@@ -43,14 +38,18 @@ public partial class User
     public virtual Cart? Cart { get; set; }
 
     [InverseProperty("User")]
+    [JsonIgnore]
     public virtual ICollection<News> News { get; set; } = new List<News>();
 
     [InverseProperty("User")]
+    [JsonIgnore]
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
     [InverseProperty("User")]
+    [JsonIgnore]
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 
     [InverseProperty("User")]
+    [JsonIgnore]
     public virtual UserProfile? UserProfile { get; set; }
 }

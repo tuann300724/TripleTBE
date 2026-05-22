@@ -630,11 +630,6 @@
                     "type": "integer",
                     "format": "int32"
                   },
-                  "User.Username": {
-                    "maxLength": 50,
-                    "minLength": 0,
-                    "type": "string"
-                  },
                   "User.Email": {
                     "maxLength": 100,
                     "minLength": 0,
@@ -684,11 +679,6 @@
                   "User.Cart.User.UserId": {
                     "type": "integer",
                     "format": "int32"
-                  },
-                  "User.Cart.User.Username": {
-                    "maxLength": 50,
-                    "minLength": 0,
-                    "type": "string"
                   },
                   "User.Cart.User.Email": {
                     "maxLength": 100,
@@ -766,11 +756,6 @@
                   "User.Cart.User.UserProfile.User.UserId": {
                     "type": "integer",
                     "format": "int32"
-                  },
-                  "User.Cart.User.UserProfile.User.Username": {
-                    "maxLength": 50,
-                    "minLength": 0,
-                    "type": "string"
                   },
                   "User.Cart.User.UserProfile.User.Email": {
                     "maxLength": 100,
@@ -870,11 +855,6 @@
                     "type": "integer",
                     "format": "int32"
                   },
-                  "User.UserProfile.User.Username": {
-                    "maxLength": 50,
-                    "minLength": 0,
-                    "type": "string"
-                  },
                   "User.UserProfile.User.Email": {
                     "maxLength": 100,
                     "minLength": 0,
@@ -924,11 +904,6 @@
                   "User.UserProfile.User.Cart.User.UserId": {
                     "type": "integer",
                     "format": "int32"
-                  },
-                  "User.UserProfile.User.Cart.User.Username": {
-                    "maxLength": 50,
-                    "minLength": 0,
-                    "type": "string"
                   },
                   "User.UserProfile.User.Cart.User.Email": {
                     "maxLength": 100,
@@ -1031,9 +1006,6 @@
                 "User.UserId": {
                   "style": "form"
                 },
-                "User.Username": {
-                  "style": "form"
-                },
                 "User.Email": {
                   "style": "form"
                 },
@@ -1065,9 +1037,6 @@
                   "style": "form"
                 },
                 "User.Cart.User.UserId": {
-                  "style": "form"
-                },
-                "User.Cart.User.Username": {
                   "style": "form"
                 },
                 "User.Cart.User.Email": {
@@ -1116,9 +1085,6 @@
                   "style": "form"
                 },
                 "User.Cart.User.UserProfile.User.UserId": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.Username": {
                   "style": "form"
                 },
                 "User.Cart.User.UserProfile.User.Email": {
@@ -1181,9 +1147,6 @@
                 "User.UserProfile.User.UserId": {
                   "style": "form"
                 },
-                "User.UserProfile.User.Username": {
-                  "style": "form"
-                },
                 "User.UserProfile.User.Email": {
                   "style": "form"
                 },
@@ -1215,9 +1178,6 @@
                   "style": "form"
                 },
                 "User.UserProfile.User.Cart.User.UserId": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.Username": {
                   "style": "form"
                 },
                 "User.UserProfile.User.Cart.User.Email": {
@@ -1351,11 +1311,6 @@
                     "type": "integer",
                     "format": "int32"
                   },
-                  "User.Username": {
-                    "maxLength": 50,
-                    "minLength": 0,
-                    "type": "string"
-                  },
                   "User.Email": {
                     "maxLength": 100,
                     "minLength": 0,
@@ -1405,11 +1360,6 @@
                   "User.Cart.User.UserId": {
                     "type": "integer",
                     "format": "int32"
-                  },
-                  "User.Cart.User.Username": {
-                    "maxLength": 50,
-                    "minLength": 0,
-                    "type": "string"
                   },
                   "User.Cart.User.Email": {
                     "maxLength": 100,
@@ -1487,11 +1437,6 @@
                   "User.Cart.User.UserProfile.User.UserId": {
                     "type": "integer",
                     "format": "int32"
-                  },
-                  "User.Cart.User.UserProfile.User.Username": {
-                    "maxLength": 50,
-                    "minLength": 0,
-                    "type": "string"
                   },
                   "User.Cart.User.UserProfile.User.Email": {
                     "maxLength": 100,
@@ -1591,11 +1536,6 @@
                     "type": "integer",
                     "format": "int32"
                   },
-                  "User.UserProfile.User.Username": {
-                    "maxLength": 50,
-                    "minLength": 0,
-                    "type": "string"
-                  },
                   "User.UserProfile.User.Email": {
                     "maxLength": 100,
                     "minLength": 0,
@@ -1645,11 +1585,6 @@
                   "User.UserProfile.User.Cart.User.UserId": {
                     "type": "integer",
                     "format": "int32"
-                  },
-                  "User.UserProfile.User.Cart.User.Username": {
-                    "maxLength": 50,
-                    "minLength": 0,
-                    "type": "string"
                   },
                   "User.UserProfile.User.Cart.User.Email": {
                     "maxLength": 100,
@@ -1752,9 +1687,6 @@
                 "User.UserId": {
                   "style": "form"
                 },
-                "User.Username": {
-                  "style": "form"
-                },
                 "User.Email": {
                   "style": "form"
                 },
@@ -1786,9 +1718,6 @@
                   "style": "form"
                 },
                 "User.Cart.User.UserId": {
-                  "style": "form"
-                },
-                "User.Cart.User.Username": {
                   "style": "form"
                 },
                 "User.Cart.User.Email": {
@@ -1837,9 +1766,6 @@
                   "style": "form"
                 },
                 "User.Cart.User.UserProfile.User.UserId": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.Username": {
                   "style": "form"
                 },
                 "User.Cart.User.UserProfile.User.Email": {
@@ -1902,9 +1828,6 @@
                 "User.UserProfile.User.UserId": {
                   "style": "form"
                 },
-                "User.UserProfile.User.Username": {
-                  "style": "form"
-                },
                 "User.UserProfile.User.Email": {
                   "style": "form"
                 },
@@ -1936,9 +1859,6 @@
                   "style": "form"
                 },
                 "User.UserProfile.User.Cart.User.UserId": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.Username": {
                   "style": "form"
                 },
                 "User.UserProfile.User.Cart.User.Email": {
@@ -2561,14 +2481,6 @@
                   "ProductName": {
                     "type": "string"
                   },
-                  "Price": {
-                    "type": "number",
-                    "format": "double"
-                  },
-                  "Stock": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
                   "Description": {
                     "type": "string"
                   },
@@ -2577,6 +2489,10 @@
                     "format": "int32"
                   },
                   "CategoryId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Status": {
                     "type": "integer",
                     "format": "int32"
                   },
@@ -2597,12 +2513,6 @@
                 "ProductName": {
                   "style": "form"
                 },
-                "Price": {
-                  "style": "form"
-                },
-                "Stock": {
-                  "style": "form"
-                },
                 "Description": {
                   "style": "form"
                 },
@@ -2610,6 +2520,9 @@
                   "style": "form"
                 },
                 "CategoryId": {
+                  "style": "form"
+                },
+                "Status": {
                   "style": "form"
                 },
                 "Thumbnail": {
@@ -2675,14 +2588,6 @@
                   "ProductName": {
                     "type": "string"
                   },
-                  "Price": {
-                    "type": "number",
-                    "format": "double"
-                  },
-                  "Stock": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
                   "Description": {
                     "type": "string"
                   },
@@ -2691,6 +2596,10 @@
                     "format": "int32"
                   },
                   "CategoryId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Status": {
                     "type": "integer",
                     "format": "int32"
                   },
@@ -2711,12 +2620,6 @@
                 "ProductName": {
                   "style": "form"
                 },
-                "Price": {
-                  "style": "form"
-                },
-                "Stock": {
-                  "style": "form"
-                },
                 "Description": {
                   "style": "form"
                 },
@@ -2724,6 +2627,9 @@
                   "style": "form"
                 },
                 "CategoryId": {
+                  "style": "form"
+                },
+                "Status": {
                   "style": "form"
                 },
                 "Thumbnail": {
@@ -3450,10 +3356,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "productId": {
-            "type": "integer",
-            "format": "int32"
-          },
           "variantId": {
             "type": "integer",
             "format": "int32",
@@ -3572,13 +3474,21 @@
             "type": "integer",
             "format": "int32"
           },
-          "productId": {
-            "type": "integer",
-            "format": "int32"
-          },
           "variantId": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          },
+          "productName": {
+            "type": "string",
+            "nullable": true
+          },
+          "variantName": {
+            "type": "string",
+            "nullable": true
+          },
+          "productImage": {
+            "type": "string",
             "nullable": true
           },
           "quantity": {
@@ -3641,10 +3551,6 @@
             "type": "string",
             "nullable": true
           },
-          "price": {
-            "type": "number",
-            "format": "double"
-          },
           "description": {
             "type": "string",
             "nullable": true
@@ -3653,11 +3559,6 @@
             "maxLength": 255,
             "minLength": 0,
             "type": "string",
-            "nullable": true
-          },
-          "stock": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           },
           "status": {
@@ -3686,22 +3587,8 @@
           "brand": {
             "$ref": "#/components/schemas/Brand"
           },
-          "cartItems": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CartItem"
-            },
-            "nullable": true
-          },
           "category": {
             "$ref": "#/components/schemas/Category"
-          },
-          "orderDetails": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OrderDetail"
-            },
-            "nullable": true
           },
           "productImages": {
             "type": "array",
@@ -3759,40 +3646,27 @@
             "format": "int32"
           },
           "color": {
-            "maxLength": 50,
-            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "size": {
-            "maxLength": 20,
-            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "version": {
-            "maxLength": 100,
-            "minLength": 0,
             "type": "string",
             "nullable": true
           },
-          "quantity": {
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "stock": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
-          "cartItems": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CartItem"
-            },
-            "nullable": true
-          },
-          "orderDetails": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OrderDetail"
-            },
+          "sku": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -3837,12 +3711,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "username": {
-            "maxLength": 50,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
           "email": {
             "maxLength": 100,
             "minLength": 0,
@@ -3876,30 +3744,6 @@
             "type": "string",
             "format": "date-time",
             "nullable": true
-          },
-          "news": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/News"
-            },
-            "nullable": true
-          },
-          "orders": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Order"
-            },
-            "nullable": true
-          },
-          "reviews": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Review"
-            },
-            "nullable": true
-          },
-          "userProfile": {
-            "$ref": "#/components/schemas/UserProfile"
           }
         },
         "additionalProperties": false
@@ -3934,9 +3778,6 @@
             "minLength": 0,
             "type": "string",
             "nullable": true
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
           }
         },
         "additionalProperties": false

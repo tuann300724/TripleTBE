@@ -32,7 +32,7 @@ namespace TripleTBE.Controllers
                     p.Address,
                     p.Avatar,
 
-                    Username = p.User.Username,
+              
                     Email = p.User.Email,
                     Role = p.User.Role
                 })
@@ -60,7 +60,7 @@ namespace TripleTBE.Controllers
 
                     User = new
                     {
-                        p.User.Username,
+                    
                         p.User.Email,
                         p.User.Role,
                         p.User.Status

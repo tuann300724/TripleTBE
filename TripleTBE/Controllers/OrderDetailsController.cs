@@ -10,118 +10,204 @@ namespace TripleTBE.Controllers
     {
         private readonly BadmintonStoreDbContext _context;
 
-        public OrderDetailsController(BadmintonStoreDbContext context)
+        public OrderDetailsController(
+            BadmintonStoreDbContext context)
         {
             _context = context;
         }
 
-        // GET ALL
+        /* =========================================================
+           GET ALL
+        ========================================================= */
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var orderDetails = await _context.OrderDetails
                 .Include(x => x.Order)
-                .Include(x => x.Product)
                 .Include(x => x.Variant)
+                .ThenInclude(v => v.Product)
+                .Select(x => new
+                {
+                    x.OrderDetailId,
+
+                    x.OrderId,
+
+                    x.VariantId,
+
+                    ProductName = x.Variant.Product.ProductName,
+
+                    x.Variant.Color,
+
+                    x.Variant.Size,
+
+                    x.Variant.Version,
+
+                    x.Quantity,
+
+                    x.UnitPrice,
+
+                    TotalPrice = x.Quantity * x.UnitPrice
+                })
                 .ToListAsync();
 
             return Ok(orderDetails);
         }
 
-        // GET BY ID
+        /* =========================================================
+           GET BY ID
+        ========================================================= */
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var orderDetail = await _context.OrderDetails
                 .Include(x => x.Order)
-                .Include(x => x.Product)
                 .Include(x => x.Variant)
-                .FirstOrDefaultAsync(x => x.OrderDetailId == id);
+                .ThenInclude(v => v.Product)
+                .Where(x => x.OrderDetailId == id)
+                .Select(x => new
+                {
+                    x.OrderDetailId,
+
+                    x.OrderId,
+
+                    x.VariantId,
+
+                    ProductName = x.Variant.Product.ProductName,
+
+                    x.Variant.Color,
+
+                    x.Variant.Size,
+
+                    x.Variant.Version,
+
+                    x.Quantity,
+
+                    x.UnitPrice,
+
+                    TotalPrice = x.Quantity * x.UnitPrice
+                })
+                .FirstOrDefaultAsync();
 
             if (orderDetail == null)
-                return NotFound();
+            {
+                return NotFound(new
+                {
+                    message = "Order detail not found"
+                });
+            }
 
             return Ok(orderDetail);
         }
 
-        // CREATE
+        /* =========================================================
+           CREATE
+        ========================================================= */
+
         [HttpPost]
         public async Task<IActionResult> Create(
             [FromBody] OrderDetail orderDetail)
         {
-            orderDetail.TotalPrice =
-                orderDetail.Quantity * orderDetail.UnitPrice;
+            var variant = await _context.ProductVariants
+                .FirstOrDefaultAsync(v =>
+                    v.VariantId == orderDetail.VariantId);
+
+            if (variant == null)
+            {
+                return BadRequest(new
+                {
+                    message = "Variant not found"
+                });
+            }
+
+            if (orderDetail.Quantity <= 0)
+            {
+                return BadRequest(new
+                {
+                    message = "Quantity must be greater than 0"
+                });
+            }
+
+            if (variant.Stock < orderDetail.Quantity)
+            {
+                return BadRequest(new
+                {
+                    message = "Not enough stock"
+                });
+            }
+
+            // snapshot price
+            orderDetail.UnitPrice = variant.Price;
+
+            // reduce stock
+            variant.Stock -= orderDetail.Quantity;
 
             _context.OrderDetails.Add(orderDetail);
 
             await _context.SaveChangesAsync();
 
-            return Ok(orderDetail);
+            return Ok(new
+            {
+                message = "Create order detail success",
+                data = orderDetail
+            });
         }
 
-        // UPDATE
+        /* =========================================================
+           UPDATE
+        ========================================================= */
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(
             int id,
             [FromBody] OrderDetail updatedOrderDetail)
         {
             var orderDetail = await _context.OrderDetails
-                .FirstOrDefaultAsync(x => x.OrderDetailId == id);
+                .FirstOrDefaultAsync(x =>
+                    x.OrderDetailId == id);
 
             if (orderDetail == null)
-                return NotFound();
-
-            // update order
-            if (updatedOrderDetail.OrderId > 0)
             {
-                orderDetail.OrderId = updatedOrderDetail.OrderId;
+                return NotFound(new
+                {
+                    message = "Order detail not found"
+                });
             }
 
-            // update product
-            if (updatedOrderDetail.ProductId > 0)
-            {
-                orderDetail.ProductId = updatedOrderDetail.ProductId;
-            }
-
-            // update variant
-            if (updatedOrderDetail.VariantId != null)
-            {
-                orderDetail.VariantId =
-                    updatedOrderDetail.VariantId;
-            }
-
-            // update quantity
             if (updatedOrderDetail.Quantity > 0)
             {
                 orderDetail.Quantity =
                     updatedOrderDetail.Quantity;
             }
 
-            // update price
-            if (updatedOrderDetail.UnitPrice > 0)
-            {
-                orderDetail.UnitPrice =
-                    updatedOrderDetail.UnitPrice;
-            }
-
-            // auto total
-            orderDetail.TotalPrice =
-                orderDetail.Quantity * orderDetail.UnitPrice;
-
             await _context.SaveChangesAsync();
 
-            return Ok(orderDetail);
+            return Ok(new
+            {
+                message = "Update order detail success",
+                data = orderDetail
+            });
         }
 
-        // DELETE
+        /* =========================================================
+           DELETE
+        ========================================================= */
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var orderDetail = await _context.OrderDetails
-                .FirstOrDefaultAsync(x => x.OrderDetailId == id);
+                .FirstOrDefaultAsync(x =>
+                    x.OrderDetailId == id);
 
             if (orderDetail == null)
-                return NotFound();
+            {
+                return NotFound(new
+                {
+                    message = "Order detail not found"
+                });
+            }
 
             _context.OrderDetails.Remove(orderDetail);
 

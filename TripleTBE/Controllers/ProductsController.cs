@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TripleTBE.DTOs;
 using TripleTBE.Models;
-using TripleTBE.Repositories;
 using TripleTBE.Repositories.Interfaces;
 
 namespace TripleTBE.Controllers
@@ -12,10 +11,15 @@ namespace TripleTBE.Controllers
     {
         private readonly IProductRepository _repository;
 
-        public ProductsController(IProductRepository repository)
+        public ProductsController(
+            IProductRepository repository)
         {
             _repository = repository;
         }
+
+        /* =========================================================
+           GET ALL
+        ========================================================= */
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -25,32 +29,48 @@ namespace TripleTBE.Controllers
             return Ok(products);
         }
 
+        /* =========================================================
+           GET BY ID
+        ========================================================= */
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var product = await _repository.GetByIdAsync(id);
 
             if (product == null)
-                return NotFound();
+            {
+                return NotFound(new
+                {
+                    message = "Product not found"
+                });
+            }
 
             return Ok(product);
         }
 
+        /* =========================================================
+           CREATE PRODUCT
+        ========================================================= */
+
         [HttpPost]
         public async Task<IActionResult> CreateProduct(
-        [FromForm] ProductCreateDTO dto)
+            [FromForm] ProductCreateDTO dto)
         {
             var product = new Product
             {
                 ProductName = dto.ProductName,
-                Price = dto.Price,
-                Stock = dto.Stock,
+
                 Description = dto.Description,
 
                 BrandId = dto.BrandId,
+
                 CategoryId = dto.CategoryId,
 
+                Status = dto.Status ?? 1,
+
                 CreatedAt = DateTime.Now,
+
                 UpdatedAt = DateTime.Now
             };
 
@@ -62,19 +82,26 @@ namespace TripleTBE.Controllers
             return Ok(createdProduct);
         }
 
+        /* =========================================================
+           UPDATE PRODUCT
+        ========================================================= */
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProduct(
-     int id,
-     [FromForm] ProductCreateDTO dto)
+            int id,
+            [FromForm] ProductCreateDTO dto)
         {
             var product = new Product
             {
                 ProductName = dto.ProductName,
-                Price = dto.Price,
-                Stock = dto.Stock,
+
                 Description = dto.Description,
+
                 BrandId = dto.BrandId,
-                CategoryId = dto.CategoryId
+
+                CategoryId = dto.CategoryId,
+
+                Status = dto.Status
             };
 
             var updatedProduct = await _repository.UpdateAsync(
@@ -85,11 +112,19 @@ namespace TripleTBE.Controllers
 
             if (updatedProduct == null)
             {
-                return NotFound();
+                return NotFound(new
+                {
+                    message = "Product not found"
+                });
             }
 
             return Ok(updatedProduct);
         }
+
+        /* =========================================================
+           CHANGE STATUS
+        ========================================================= */
+
         [HttpPut("change-status/{id}")]
         public async Task<IActionResult> ChangeStatus(
             int id,
@@ -99,7 +134,12 @@ namespace TripleTBE.Controllers
                 .ChangeStatusAsync(id, status);
 
             if (!result)
-                return NotFound();
+            {
+                return NotFound(new
+                {
+                    message = "Product not found"
+                });
+            }
 
             return Ok(new
             {

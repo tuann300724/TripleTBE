@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace TripleTBE.Models;
 
@@ -15,19 +13,16 @@ public partial class Product
     [StringLength(200)]
     public string ProductName { get; set; } = null!;
 
-    [Column(TypeName = "decimal(18, 2)")]
-    public decimal Price { get; set; }
-
     public string? Description { get; set; }
 
     [StringLength(255)]
     [Unicode(false)]
     public string? Thumbnail { get; set; }
 
-    public int? Stock { get; set; }
     public int? Status { get; set; }
+
     public int CategoryId { get; set; }
-    
+
     public int BrandId { get; set; }
 
     [Column(TypeName = "datetime")]
@@ -40,23 +35,19 @@ public partial class Product
     [InverseProperty("Products")]
     public virtual Brand Brand { get; set; } = null!;
 
-    [InverseProperty("Product")]
-    public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
-
     [ForeignKey("CategoryId")]
     [InverseProperty("Products")]
     public virtual Category Category { get; set; } = null!;
 
     [InverseProperty("Product")]
-    public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
-
-    [InverseProperty("Product")]
     public virtual ICollection<ProductImage> ProductImages { get; set; }
-            = new List<ProductImage>();
+        = new List<ProductImage>();
 
     [InverseProperty("Product")]
-    public virtual ICollection<ProductVariant> ProductVariants { get; set; } = new List<ProductVariant>();
+    public virtual ICollection<ProductVariant> ProductVariants { get; set; }
+        = new List<ProductVariant>();
 
     [InverseProperty("Product")]
-    public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
+    public virtual ICollection<Review> Reviews { get; set; }
+        = new List<Review>();
 }
