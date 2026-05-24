@@ -54,11 +54,10 @@ namespace TripleTBE.Controllers
             return Ok(cartItem);
         }
 
-        // UPDATE
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(
-            int id,
-            [FromBody] CartItem updatedCartItem)
+    int id,
+    [FromBody] UpdateCartItemDto dto)
         {
             var cartItem = await _context.CartItems
                 .FirstOrDefaultAsync(x => x.CartItemId == id);
@@ -67,20 +66,9 @@ namespace TripleTBE.Controllers
                 return NotFound();
 
             // update
-            if (updatedCartItem.CartId > 0)
-            {
-                cartItem.CartId = updatedCartItem.CartId;
-            }
-
-            if (updatedCartItem.VariantId != null)
-            {
-                cartItem.VariantId = updatedCartItem.VariantId;
-            }
-
-            if (updatedCartItem.Quantity != null)
-            {
-                cartItem.Quantity = updatedCartItem.Quantity;
-            }
+            cartItem.CartId = dto.CartId;
+            cartItem.VariantId = dto.VariantId;
+            cartItem.Quantity = dto.Quantity;
 
             await _context.SaveChangesAsync();
 
@@ -106,5 +94,11 @@ namespace TripleTBE.Controllers
                 message = "Delete cart item success"
             });
         }
+    }
+    public class UpdateCartItemDto
+    {
+        public int CartId { get; set; }
+        public int VariantId { get; set; }
+        public int Quantity { get; set; }
     }
 }

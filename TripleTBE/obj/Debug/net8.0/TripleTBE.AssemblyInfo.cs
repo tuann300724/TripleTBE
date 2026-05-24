@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TripleTBE")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dc2c7eb0275763422a826974a04a34a87e232167")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5a4436b7a5c409e0882fd9548c484ef716ccca58")]
 [assembly: System.Reflection.AssemblyProductAttribute("TripleTBE")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TripleTBE")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

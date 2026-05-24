@@ -178,8 +178,8 @@
         "IsRequired": true
       },
       {
-        "Name": "updatedCartItem",
-        "Type": "TripleTBE.Models.CartItem",
+        "Name": "dto",
+        "Type": "TripleTBE.Controllers.UpdateCartItemDto",
         "IsRequired": true
       }
     ],
@@ -281,6 +281,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "TripleTBE.Controllers.CartsController",
+    "Method": "AddToCart",
+    "RelativePath": "api/Carts/add-to-cart",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "TripleTBE.DTOs.AddToCartDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "TripleTBE.Controllers.CategoriesController",
     "Method": "GetAll",
     "RelativePath": "api/Categories",
@@ -360,6 +376,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "TripleTBE.Controllers.MomoController",
+    "Method": "CreateMomo",
+    "RelativePath": "api/Momo/create-momo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "req",
+        "Type": "TripleTBE.Controllers.CreateMomoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "TripleTBE.Controllers.NewsController",
     "Method": "GetAll",
     "RelativePath": "api/News",
@@ -1257,8 +1289,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "orderDetail",
-        "Type": "TripleTBE.Models.OrderDetail",
+        "Name": "dto",
+        "Type": "TripleTBE.Controllers.CreateOrderDetailDto",
         "IsRequired": true
       }
     ],
@@ -1336,8 +1368,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "order",
-        "Type": "TripleTBE.Models.Order",
+        "Name": "dto",
+        "Type": "TripleTBE.Controllers.CreateOrderDto",
         "IsRequired": true
       }
     ],
@@ -1415,8 +1447,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "payment",
-        "Type": "TripleTBE.Models.Payment",
+        "Name": "dto",
+        "Type": "TripleTBE.Controllers.CreatePaymentDto",
         "IsRequired": true
       }
     ],
@@ -1469,6 +1501,22 @@
     "Parameters": [
       {
         "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TripleTBE.Controllers.PaymentsController",
+    "Method": "ConfirmMomoPayment",
+    "RelativePath": "api/Payments/ConfirmMomo/{orderId}",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderId",
         "Type": "System.Int32",
         "IsRequired": true
       }
@@ -1998,6 +2046,22 @@
         "Name": "status",
         "Type": "System.String",
         "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TripleTBE.Controllers.UserController",
+    "Method": "Login",
+    "RelativePath": "api/User/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "TripleTBE.Controllers.UserController\u002BLoginRequest",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []

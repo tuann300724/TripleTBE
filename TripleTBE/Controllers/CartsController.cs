@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using TripleTBE.DTOs;
 using TripleTBE.Models;
 using TripleTBE.Repositories.Interfaces;
 
@@ -9,6 +11,7 @@ namespace TripleTBE.Controllers
     public class CartsController : ControllerBase
     {
         private readonly ICartRepository _repository;
+
 
         public CartsController(ICartRepository repository)
         {
@@ -68,5 +71,22 @@ namespace TripleTBE.Controllers
 
             return Ok("Delete success");
         }
+        // ADD TO CART
+        [HttpPost("add-to-cart")]
+        public async Task<IActionResult> AddToCart(
+            AddToCartDto dto)
+        {
+            await _repository.AddToCartAsync(
+                dto.UserId,
+                dto.VariantId,
+                dto.Quantity);
+
+            return Ok(new
+            {
+                message = "Add to cart success",
+                data = dto
+            });
+        }
     }
+
 }

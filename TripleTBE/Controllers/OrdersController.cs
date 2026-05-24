@@ -47,14 +47,17 @@ namespace TripleTBE.Controllers
         // CREATE
         [HttpPost]
         public async Task<IActionResult> Create(
-            [FromBody] Order order)
+              [FromBody] CreateOrderDto dto)
         {
-            order.OrderDate = DateTime.Now;
-
-            if (string.IsNullOrEmpty(order.OrderStatus))
+            var order = new Order
             {
-                order.OrderStatus = "Pending";
-            }
+                UserId = dto.UserId,
+                TotalAmount = dto.TotalAmount,
+                OrderStatus = string.IsNullOrEmpty(dto.OrderStatus)
+                    ? "Pending"
+                    : dto.OrderStatus,
+                OrderDate = DateTime.Now
+            };
 
             _context.Orders.Add(order);
 
@@ -62,7 +65,7 @@ namespace TripleTBE.Controllers
 
             return Ok(order);
         }
-
+    
         // UPDATE
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(
@@ -118,4 +121,14 @@ namespace TripleTBE.Controllers
             });
         }
     }
+
+    public class CreateOrderDto
+    {
+        public int UserId { get; set; }
+
+        public string? OrderStatus { get; set; }
+
+        public decimal TotalAmount { get; set; }
+    }
+
 }

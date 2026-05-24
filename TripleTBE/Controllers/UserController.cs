@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using TripleTBE.Models;
@@ -154,6 +155,39 @@ namespace TripleTBE.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(user);
+        }
+        // =========================
+        // LOGIN
+        // =========================
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x =>
+                    x.Email == request.Email &&
+                    x.PasswordHash == request.Password);
+
+            if (user == null)
+            {
+                return BadRequest("Email hoặc mật khẩu không đúng");
+            }
+
+            // check status
+            if (user.Status != "Active")
+            {
+                return BadRequest("Tài khoản đã bị khóa");
+            }
+
+            return Ok(user);
+        }
+
+        // =========================
+        // LOGIN DTO
+        // =========================
+        public class LoginRequest
+        {
+            public string Email { get; set; }
+            public string Password { get; set; }
         }
     }
 }
