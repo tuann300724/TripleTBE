@@ -180,6 +180,63 @@ namespace TripleTBE.Controllers
 
             return Ok(user);
         }
+        public class ChangePasswordRequest
+        {
+            public string OldPassword { get; set; }
+            public string NewPassword { get; set; }
+        }
+
+        public class ResetPasswordByAdminRequest
+        {
+            public string NewPassword { get; set; }
+        }
+
+
+        [HttpPost("{id}/change-password")]
+        public async Task<IActionResult> ChangePassword(int id, [FromBody] ChangePasswordRequest request)
+        {
+            var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+                return NotFound("User không tồn tại");
+
+            // Kiểm tra mật khẩu cũ có khớp không
+            if (user.PasswordHash != request.OldPassword)
+            {
+                return BadRequest("Mật khẩu cũ không chính xác");
+            }
+
+            // Kiểm tra mật khẩu mới không được trùng mật khẩu cũ
+            if (request.OldPassword == request.NewPassword)
+            {
+                return BadRequest("Mật khẩu mới không được trùng với mật khẩu cũ");
+            }
+
+            // Cập nhật mật khẩu mới và thời gian update
+            user.PasswordHash = request.NewPassword;
+            user.UpdatedAt = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Đổi mật khẩu thành công" });
+        }
+
+
+        [HttpPost("{id}/reset-password")]
+        public async Task<IActionResult> ResetPasswordByAdmin(int id, [FromBody] ResetPasswordByAdminRequest request)
+        {
+            var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+                return NotFound("User không tồn tại");
+
+            user.PasswordHash = request.NewPassword;
+            user.UpdatedAt = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Admin đã đặt lại mật khẩu thành công" });
+        }
 
         // =========================
         // LOGIN DTO

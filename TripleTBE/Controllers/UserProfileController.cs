@@ -10,10 +10,12 @@ namespace TripleTBE.Controllers
     public class UserProfileController : ControllerBase
     {
         private readonly BadmintonStoreDbContext _context;
+        private readonly IWebHostEnvironment _env; // Thêm biến này
 
-        public UserProfileController(BadmintonStoreDbContext context)
+        public UserProfileController(BadmintonStoreDbContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env; // Gán giá trị từ DI
         }
 
         // =========================
@@ -102,8 +104,9 @@ namespace TripleTBE.Controllers
         // =========================
         // UPDATE PROFILE
         // =========================
+    
         [HttpPut("{userId}")]
-        public async Task<IActionResult> Update(int userId, UserProfile input)
+        public async Task<IActionResult> Update(int userId, [FromForm] UpdateProfileDto input)
         {
             var profile = await _context.UserProfiles
                 .FirstOrDefaultAsync(p => p.UserId == userId);
@@ -111,11 +114,44 @@ namespace TripleTBE.Controllers
             if (profile == null)
                 return NotFound("Profile không tồn tại");
 
+            // 1. Cập nhật các thông tin text cơ bản
             profile.FullName = input.FullName;
             profile.Phone = input.Phone;
             profile.Address = input.Address;
-            profile.Avatar = input.Avatar;
 
+            // 2. Xử lý upload file ảnh nếu có dữ liệu truyền lên
+            if (input.AvatarFile != null && input.AvatarFile.Length > 0)
+            {
+                var request = HttpContext.Request;
+
+                // Tạo tên file độc nhất tránh trùng lặp
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(input.AvatarFile.FileName);
+
+                // Đường dẫn vật lý để lưu file (Lưu vào wwwroot/images/avatars)
+                var folderPath = Path.Combine(_env.WebRootPath, "images/avatars");
+
+                // Tạo thư mục nếu chưa tồn tại
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                var filePath = Path.Combine(folderPath, fileName);
+
+                // Lưu file vào ổ cứng server
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await input.AvatarFile.CopyToAsync(stream);
+                }
+
+                // Tạo chuỗi URL để client có thể truy cập qua trình duyệt
+                var imageUrl = $"{request.Scheme}://{request.Host}/images/avatars/{fileName}";
+
+                // Gán URL mới vào thuộc tính Avatar
+                profile.Avatar = imageUrl;
+            }
+
+            // 3. Lưu tất cả thay đổi vào DB
             await _context.SaveChangesAsync();
 
             return Ok(profile);
@@ -138,5 +174,12 @@ namespace TripleTBE.Controllers
 
             return Ok("Deleted");
         }
+    }
+    public class UpdateProfileDto
+    {
+        public string? FullName { get; set; }
+        public string? Phone { get; set; }
+        public string? Address { get; set; }
+        public IFormFile? AvatarFile { get; set; } // Nhận file từ client
     }
 }

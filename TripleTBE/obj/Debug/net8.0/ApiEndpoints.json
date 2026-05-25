@@ -1429,6 +1429,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "TripleTBE.Controllers.OrdersController",
+    "Method": "GetByUserId",
+    "RelativePath": "api/Orders/user/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "TripleTBE.Controllers.PaymentsController",
     "Method": "GetAll",
     "RelativePath": "api/Payments",
@@ -2031,6 +2047,48 @@
   },
   {
     "ContainingType": "TripleTBE.Controllers.UserController",
+    "Method": "ChangePassword",
+    "RelativePath": "api/User/{id}/change-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "TripleTBE.Controllers.UserController\u002BChangePasswordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TripleTBE.Controllers.UserController",
+    "Method": "ResetPasswordByAdmin",
+    "RelativePath": "api/User/{id}/reset-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "TripleTBE.Controllers.UserController\u002BResetPasswordByAdminRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TripleTBE.Controllers.UserController",
     "Method": "ChangeStatus",
     "RelativePath": "api/User/{id}/status",
     "HttpMethod": "PATCH",
@@ -2122,9 +2180,24 @@
         "IsRequired": true
       },
       {
-        "Name": "input",
-        "Type": "TripleTBE.Models.UserProfile",
-        "IsRequired": true
+        "Name": "FullName",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Phone",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Address",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "AvatarFile",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

@@ -1,1 +1,2 @@
 wwwroot\images\products\c35bcbf6-574d-477a-8111-2b5912293a74.jpg
+wwwroot\images\avatars\b48b5eb7-f678-49e7-97d9-53b798327f96.png
