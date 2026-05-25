@@ -39,11 +39,52 @@ namespace TripleTBE.Controllers
             public string? Version { get; set; }
             public string? Image { get; set; }
         }
-
+        public class UpdateOrderStatusDto
+        {
+            public string Status { get; set; } = null!;
+        }
         // ==========================================
         // CÁC API ENDPOINTS
         // ==========================================
+        [HttpPut("{id}/status")]
+        public async Task<IActionResult> UpdateStatus(int id, [FromBody] UpdateOrderStatusDto dto)
+        {
+            // 1. Tìm đơn hàng cần cập nhật trong database
+            var order = await _context.Orders.FirstOrDefaultAsync(x => x.OrderId == id);
+            if (order == null)
+            {
+                return NotFound(new { message = $"Không tìm thấy đơn hàng có mã #{id}." });
+            }
 
+            // 2. Kiểm tra chuỗi trạng thái gửi lên từ client
+            if (string.IsNullOrEmpty(dto.Status))
+            {
+                return BadRequest(new { message = "Trạng thái đơn hàng không được để trống." });
+            }
+
+            // Chuẩn hóa chuỗi (Viết hoa chữ cái đầu hoặc tùy biến khớp với DB của bạn)
+            string targetStatus = dto.Status.Trim();
+
+            // 3. Ràng buộc kiểm tra nghiêm ngặt 3 trạng thái hợp lệ
+            if (targetStatus != "Pending" && targetStatus != "Completed" && targetStatus != "Declined")
+            {
+                return BadRequest(new
+                {
+                    message = "Trạng thái không hợp lệ! Chỉ chấp nhận các giá trị: 'Pending', 'Completed', hoặc 'Declined'."
+                });
+            }
+
+            // 4. Cập nhật và lưu thay đổi
+            order.OrderStatus = targetStatus;
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = "Cập nhật trạng thái đơn hàng thành công!",
+                orderId = order.OrderId,
+                newStatus = order.OrderStatus
+            });
+        }
         // 1. GET ALL
         [HttpGet]
         public async Task<IActionResult> GetAll()
