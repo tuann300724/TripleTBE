@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Be\\TripleTBE\\TripleTBE\\TripleTBE.csproj": {}
+    "F:\\CODE BEN REACT\\TripleTBE\\TripleTBE\\TripleTBE.csproj": {}
   },
   "projects": {
-    "E:\\Be\\TripleTBE\\TripleTBE\\TripleTBE.csproj": {
+    "F:\\CODE BEN REACT\\TripleTBE\\TripleTBE\\TripleTBE.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Be\\TripleTBE\\TripleTBE\\TripleTBE.csproj",
+        "projectUniqueName": "F:\\CODE BEN REACT\\TripleTBE\\TripleTBE\\TripleTBE.csproj",
         "projectName": "TripleTBE",
-        "projectPath": "E:\\Be\\TripleTBE\\TripleTBE\\TripleTBE.csproj",
-        "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-        "outputPath": "E:\\Be\\TripleTBE\\TripleTBE\\obj\\",
+        "projectPath": "F:\\CODE BEN REACT\\TripleTBE\\TripleTBE\\TripleTBE.csproj",
+        "packagesPath": "C:\\Users\\tuanv\\.nuget\\packages\\",
+        "outputPath": "F:\\CODE BEN REACT\\TripleTBE\\TripleTBE\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\tuanv\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

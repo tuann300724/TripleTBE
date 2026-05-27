@@ -3,8 +3,12 @@ using TripleTBE.Models;
 using TripleTBE.Repositories;
 using TripleTBE.Repositories.Implementations;
 using TripleTBE.Repositories.Interfaces;
-var builder = WebApplication.CreateBuilder(args);
 
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    Args = args,
+    WebRootPath = "wwwroot"
+});
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -12,7 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.WebHost.UseWebRoot("wwwroot");
+
 builder.Services.AddDbContext<BadmintonStoreDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")

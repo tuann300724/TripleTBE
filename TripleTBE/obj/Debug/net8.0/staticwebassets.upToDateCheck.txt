@@ -1,9 +1,0 @@
-wwwroot\images\products\2ae88dbb-6499-4147-b0d4-317ee8e03c5b.jpg
-wwwroot\images\products\452c7b4d-fda8-4143-8ec9-39088ef00392.png
-wwwroot\images\products\65dc56e8-172a-4534-bd26-816214cd5720.png
-wwwroot\images\products\99459ec8-ee37-4da4-b39c-8a0f3ef65726.jpg
-wwwroot\images\products\9d01aa82-e4d6-493a-bfda-0c60a5e24c9e.png
-wwwroot\images\products\ad7ffa99-f1d0-4a45-8a1c-c31b984b1708.png
-wwwroot\images\products\92e65074-ce13-4ee1-b0bc-a734051dec5c.jpg
-wwwroot\images\products\c5fa1c93-0523-45a1-b622-28ea8f0d819f.jpg
-wwwroot\images\products\da2da71a-ead3-414b-9a36-0b803c7638a0.png
