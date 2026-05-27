@@ -155,7 +155,7 @@ namespace TripleTBE.Controllers
             }
 
             // 2. Cập nhật trạng thái thanh toán
-            payment.PaymentStatus = "Success";
+            payment.PaymentStatus = "Paid";
             payment.PaymentDate = DateTime.Now;
 
             // 3. Cập nhật đồng bộ trạng thái Đơn hàng (Order) sang "Processing" (Đang xử lý)
