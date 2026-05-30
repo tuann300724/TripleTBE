@@ -107,11 +107,11 @@ namespace TripleTBE.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Create(
-            [FromBody] OrderDetail orderDetail)
+       [FromBody] CreateOrderDetailDto dto)
         {
             var variant = await _context.ProductVariants
                 .FirstOrDefaultAsync(v =>
-                    v.VariantId == orderDetail.VariantId);
+                    v.VariantId == dto.VariantId);
 
             if (variant == null)
             {
@@ -121,7 +121,7 @@ namespace TripleTBE.Controllers
                 });
             }
 
-            if (orderDetail.Quantity <= 0)
+            if (dto.Quantity <= 0)
             {
                 return BadRequest(new
                 {
@@ -129,7 +129,7 @@ namespace TripleTBE.Controllers
                 });
             }
 
-            if (variant.Stock < orderDetail.Quantity)
+            if (variant.Stock < dto.Quantity)
             {
                 return BadRequest(new
                 {
@@ -137,11 +137,26 @@ namespace TripleTBE.Controllers
                 });
             }
 
-            // snapshot price
-            orderDetail.UnitPrice = variant.Price;
+            var orderDetail = new OrderDetail
+            {
+                OrderId = dto.OrderId,
+
+                VariantId = dto.VariantId,
+
+                ProductName = dto.ProductName,
+
+                VariantName = dto.VariantName,
+
+                ProductImage = dto.ProductImage,
+
+                Quantity = dto.Quantity,
+
+                // snapshot price
+                UnitPrice = variant.Price
+            };
 
             // reduce stock
-            variant.Stock -= orderDetail.Quantity;
+            variant.Stock -= dto.Quantity;
 
             _context.OrderDetails.Add(orderDetail);
 
@@ -218,5 +233,19 @@ namespace TripleTBE.Controllers
                 message = "Delete order detail success"
             });
         }
+    }
+    public class CreateOrderDetailDto
+    {
+        public int OrderId { get; set; }
+
+        public int VariantId { get; set; }
+
+        public string ProductName { get; set; } = null!;
+
+        public string? VariantName { get; set; }
+
+        public string? ProductImage { get; set; }
+
+        public int Quantity { get; set; }
     }
 }

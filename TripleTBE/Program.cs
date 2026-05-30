@@ -26,7 +26,7 @@ builder.Services.AddDbContext<BadmintonStoreDbContext>(options =>
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IBrandRepository, BrandRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
-
+builder.Services.AddHttpClient();
 
 // CORS
 builder.Services.AddCors(options =>

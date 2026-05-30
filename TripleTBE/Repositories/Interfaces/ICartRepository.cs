@@ -13,5 +13,8 @@ namespace TripleTBE.Repositories.Interfaces
         Task<Cart?> UpdateAsync(int id, Cart updatedCart);
 
         Task<bool> DeleteAsync(int id);
+        Task<Cart?> GetByUserIdAsync(int userId);
+        Task AddToCartAsync(int userId, int variantId, int quantity);
+
     }
 }

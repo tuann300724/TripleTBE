@@ -287,17 +287,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CartItem"
+                "$ref": "#/components/schemas/UpdateCartItemDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CartItem"
+                "$ref": "#/components/schemas/UpdateCartItemDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CartItem"
+                "$ref": "#/components/schemas/UpdateCartItemDto"
               }
             }
           }
@@ -455,6 +455,37 @@
         }
       }
     },
+    "/api/Carts/add-to-cart": {
+      "post": {
+        "tags": [
+          "Carts"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddToCartDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddToCartDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddToCartDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Categories": {
       "get": {
         "tags": [
@@ -580,6 +611,37 @@
         }
       }
     },
+    "/api/Momo/create-momo": {
+      "post": {
+        "tags": [
+          "Momo"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMomoRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMomoRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMomoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/News": {
       "get": {
         "tags": [
@@ -601,382 +663,15 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "NewsId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
                   "Title": {
-                    "maxLength": 255,
-                    "minLength": 0,
                     "type": "string"
                   },
                   "Content": {
                     "type": "string"
                   },
-                  "Thumbnail": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "CreatedDate": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
                   "UserId": {
                     "type": "integer",
                     "format": "int32"
-                  },
-                  "User.UserId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.Email": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.PasswordHash": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Role": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Status": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.CreatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.UpdatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.Cart.CartId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.Cart.UserId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.Cart.CreatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.Cart.CartItems": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/CartItem"
-                    }
-                  },
-                  "User.Cart.User.UserId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.Cart.User.Email": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.PasswordHash": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.Role": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.Status": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.CreatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.Cart.User.UpdatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.Cart.User.Cart": {
-                    "$ref": "#/components/schemas/Cart"
-                  },
-                  "User.Cart.User.News": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/News"
-                    }
-                  },
-                  "User.Cart.User.Orders": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Order"
-                    }
-                  },
-                  "User.Cart.User.Reviews": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Review"
-                    }
-                  },
-                  "User.Cart.User.UserProfile.UserId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.Cart.User.UserProfile.FullName": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.UserProfile.Phone": {
-                    "maxLength": 15,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.UserProfile.Address": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.UserProfile.Avatar": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.UserProfile.User.UserId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.Cart.User.UserProfile.User.Email": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.UserProfile.User.PasswordHash": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.UserProfile.User.Role": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.UserProfile.User.Status": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.UserProfile.User.CreatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.Cart.User.UserProfile.User.UpdatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.Cart.User.UserProfile.User.Cart": {
-                    "$ref": "#/components/schemas/Cart"
-                  },
-                  "User.Cart.User.UserProfile.User.News": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/News"
-                    }
-                  },
-                  "User.Cart.User.UserProfile.User.Orders": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Order"
-                    }
-                  },
-                  "User.Cart.User.UserProfile.User.Reviews": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Review"
-                    }
-                  },
-                  "User.Cart.User.UserProfile.User.UserProfile": {
-                    "$ref": "#/components/schemas/UserProfile"
-                  },
-                  "User.News": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/News"
-                    }
-                  },
-                  "User.Orders": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Order"
-                    }
-                  },
-                  "User.Reviews": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Review"
-                    }
-                  },
-                  "User.UserProfile.UserId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.UserProfile.FullName": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.Phone": {
-                    "maxLength": 15,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.Address": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.Avatar": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.User.UserId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.UserProfile.User.Email": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.User.PasswordHash": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.User.Role": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.User.Status": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.User.CreatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.UserProfile.User.UpdatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.UserProfile.User.Cart.CartId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.UserProfile.User.Cart.UserId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.UserProfile.User.Cart.CreatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.UserProfile.User.Cart.CartItems": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/CartItem"
-                    }
-                  },
-                  "User.UserProfile.User.Cart.User.UserId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.UserProfile.User.Cart.User.Email": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.User.Cart.User.PasswordHash": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.User.Cart.User.Role": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.User.Cart.User.Status": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.User.Cart.User.CreatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.UserProfile.User.Cart.User.UpdatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.UserProfile.User.Cart.User.Cart": {
-                    "$ref": "#/components/schemas/Cart"
-                  },
-                  "User.UserProfile.User.Cart.User.News": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/News"
-                    }
-                  },
-                  "User.UserProfile.User.Cart.User.Orders": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Order"
-                    }
-                  },
-                  "User.UserProfile.User.Cart.User.Reviews": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Review"
-                    }
-                  },
-                  "User.UserProfile.User.Cart.User.UserProfile": {
-                    "$ref": "#/components/schemas/UserProfile"
-                  },
-                  "User.UserProfile.User.News": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/News"
-                    }
-                  },
-                  "User.UserProfile.User.Orders": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Order"
-                    }
-                  },
-                  "User.UserProfile.User.Reviews": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Review"
-                    }
-                  },
-                  "User.UserProfile.User.UserProfile": {
-                    "$ref": "#/components/schemas/UserProfile"
                   },
                   "thumbnail": {
                     "type": "string",
@@ -985,244 +680,13 @@
                 }
               },
               "encoding": {
-                "NewsId": {
-                  "style": "form"
-                },
                 "Title": {
                   "style": "form"
                 },
                 "Content": {
                   "style": "form"
                 },
-                "Thumbnail": {
-                  "style": "form"
-                },
-                "CreatedDate": {
-                  "style": "form"
-                },
                 "UserId": {
-                  "style": "form"
-                },
-                "User.UserId": {
-                  "style": "form"
-                },
-                "User.Email": {
-                  "style": "form"
-                },
-                "User.PasswordHash": {
-                  "style": "form"
-                },
-                "User.Role": {
-                  "style": "form"
-                },
-                "User.Status": {
-                  "style": "form"
-                },
-                "User.CreatedAt": {
-                  "style": "form"
-                },
-                "User.UpdatedAt": {
-                  "style": "form"
-                },
-                "User.Cart.CartId": {
-                  "style": "form"
-                },
-                "User.Cart.UserId": {
-                  "style": "form"
-                },
-                "User.Cart.CreatedAt": {
-                  "style": "form"
-                },
-                "User.Cart.CartItems": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserId": {
-                  "style": "form"
-                },
-                "User.Cart.User.Email": {
-                  "style": "form"
-                },
-                "User.Cart.User.PasswordHash": {
-                  "style": "form"
-                },
-                "User.Cart.User.Role": {
-                  "style": "form"
-                },
-                "User.Cart.User.Status": {
-                  "style": "form"
-                },
-                "User.Cart.User.CreatedAt": {
-                  "style": "form"
-                },
-                "User.Cart.User.UpdatedAt": {
-                  "style": "form"
-                },
-                "User.Cart.User.Cart": {
-                  "style": "form"
-                },
-                "User.Cart.User.News": {
-                  "style": "form"
-                },
-                "User.Cart.User.Orders": {
-                  "style": "form"
-                },
-                "User.Cart.User.Reviews": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.UserId": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.FullName": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.Phone": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.Address": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.Avatar": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.UserId": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.Email": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.PasswordHash": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.Role": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.Status": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.CreatedAt": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.UpdatedAt": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.Cart": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.News": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.Orders": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.Reviews": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.UserProfile": {
-                  "style": "form"
-                },
-                "User.News": {
-                  "style": "form"
-                },
-                "User.Orders": {
-                  "style": "form"
-                },
-                "User.Reviews": {
-                  "style": "form"
-                },
-                "User.UserProfile.UserId": {
-                  "style": "form"
-                },
-                "User.UserProfile.FullName": {
-                  "style": "form"
-                },
-                "User.UserProfile.Phone": {
-                  "style": "form"
-                },
-                "User.UserProfile.Address": {
-                  "style": "form"
-                },
-                "User.UserProfile.Avatar": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.UserId": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Email": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.PasswordHash": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Role": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Status": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.CreatedAt": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.UpdatedAt": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.CartId": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.UserId": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.CreatedAt": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.CartItems": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.UserId": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.Email": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.PasswordHash": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.Role": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.Status": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.CreatedAt": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.UpdatedAt": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.Cart": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.News": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.Orders": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.Reviews": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.UserProfile": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.News": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Orders": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Reviews": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.UserProfile": {
                   "style": "form"
                 },
                 "thumbnail": {
@@ -1282,382 +746,15 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "NewsId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
                   "Title": {
-                    "maxLength": 255,
-                    "minLength": 0,
                     "type": "string"
                   },
                   "Content": {
                     "type": "string"
                   },
-                  "Thumbnail": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "CreatedDate": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
                   "UserId": {
                     "type": "integer",
                     "format": "int32"
-                  },
-                  "User.UserId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.Email": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.PasswordHash": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Role": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Status": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.CreatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.UpdatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.Cart.CartId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.Cart.UserId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.Cart.CreatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.Cart.CartItems": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/CartItem"
-                    }
-                  },
-                  "User.Cart.User.UserId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.Cart.User.Email": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.PasswordHash": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.Role": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.Status": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.CreatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.Cart.User.UpdatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.Cart.User.Cart": {
-                    "$ref": "#/components/schemas/Cart"
-                  },
-                  "User.Cart.User.News": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/News"
-                    }
-                  },
-                  "User.Cart.User.Orders": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Order"
-                    }
-                  },
-                  "User.Cart.User.Reviews": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Review"
-                    }
-                  },
-                  "User.Cart.User.UserProfile.UserId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.Cart.User.UserProfile.FullName": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.UserProfile.Phone": {
-                    "maxLength": 15,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.UserProfile.Address": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.UserProfile.Avatar": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.UserProfile.User.UserId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.Cart.User.UserProfile.User.Email": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.UserProfile.User.PasswordHash": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.UserProfile.User.Role": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.UserProfile.User.Status": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.Cart.User.UserProfile.User.CreatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.Cart.User.UserProfile.User.UpdatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.Cart.User.UserProfile.User.Cart": {
-                    "$ref": "#/components/schemas/Cart"
-                  },
-                  "User.Cart.User.UserProfile.User.News": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/News"
-                    }
-                  },
-                  "User.Cart.User.UserProfile.User.Orders": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Order"
-                    }
-                  },
-                  "User.Cart.User.UserProfile.User.Reviews": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Review"
-                    }
-                  },
-                  "User.Cart.User.UserProfile.User.UserProfile": {
-                    "$ref": "#/components/schemas/UserProfile"
-                  },
-                  "User.News": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/News"
-                    }
-                  },
-                  "User.Orders": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Order"
-                    }
-                  },
-                  "User.Reviews": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Review"
-                    }
-                  },
-                  "User.UserProfile.UserId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.UserProfile.FullName": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.Phone": {
-                    "maxLength": 15,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.Address": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.Avatar": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.User.UserId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.UserProfile.User.Email": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.User.PasswordHash": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.User.Role": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.User.Status": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.User.CreatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.UserProfile.User.UpdatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.UserProfile.User.Cart.CartId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.UserProfile.User.Cart.UserId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.UserProfile.User.Cart.CreatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.UserProfile.User.Cart.CartItems": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/CartItem"
-                    }
-                  },
-                  "User.UserProfile.User.Cart.User.UserId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "User.UserProfile.User.Cart.User.Email": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.User.Cart.User.PasswordHash": {
-                    "maxLength": 255,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.User.Cart.User.Role": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.User.Cart.User.Status": {
-                    "maxLength": 20,
-                    "minLength": 0,
-                    "type": "string"
-                  },
-                  "User.UserProfile.User.Cart.User.CreatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.UserProfile.User.Cart.User.UpdatedAt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "User.UserProfile.User.Cart.User.Cart": {
-                    "$ref": "#/components/schemas/Cart"
-                  },
-                  "User.UserProfile.User.Cart.User.News": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/News"
-                    }
-                  },
-                  "User.UserProfile.User.Cart.User.Orders": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Order"
-                    }
-                  },
-                  "User.UserProfile.User.Cart.User.Reviews": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Review"
-                    }
-                  },
-                  "User.UserProfile.User.Cart.User.UserProfile": {
-                    "$ref": "#/components/schemas/UserProfile"
-                  },
-                  "User.UserProfile.User.News": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/News"
-                    }
-                  },
-                  "User.UserProfile.User.Orders": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Order"
-                    }
-                  },
-                  "User.UserProfile.User.Reviews": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Review"
-                    }
-                  },
-                  "User.UserProfile.User.UserProfile": {
-                    "$ref": "#/components/schemas/UserProfile"
                   },
                   "thumbnail": {
                     "type": "string",
@@ -1666,244 +763,13 @@
                 }
               },
               "encoding": {
-                "NewsId": {
-                  "style": "form"
-                },
                 "Title": {
                   "style": "form"
                 },
                 "Content": {
                   "style": "form"
                 },
-                "Thumbnail": {
-                  "style": "form"
-                },
-                "CreatedDate": {
-                  "style": "form"
-                },
                 "UserId": {
-                  "style": "form"
-                },
-                "User.UserId": {
-                  "style": "form"
-                },
-                "User.Email": {
-                  "style": "form"
-                },
-                "User.PasswordHash": {
-                  "style": "form"
-                },
-                "User.Role": {
-                  "style": "form"
-                },
-                "User.Status": {
-                  "style": "form"
-                },
-                "User.CreatedAt": {
-                  "style": "form"
-                },
-                "User.UpdatedAt": {
-                  "style": "form"
-                },
-                "User.Cart.CartId": {
-                  "style": "form"
-                },
-                "User.Cart.UserId": {
-                  "style": "form"
-                },
-                "User.Cart.CreatedAt": {
-                  "style": "form"
-                },
-                "User.Cart.CartItems": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserId": {
-                  "style": "form"
-                },
-                "User.Cart.User.Email": {
-                  "style": "form"
-                },
-                "User.Cart.User.PasswordHash": {
-                  "style": "form"
-                },
-                "User.Cart.User.Role": {
-                  "style": "form"
-                },
-                "User.Cart.User.Status": {
-                  "style": "form"
-                },
-                "User.Cart.User.CreatedAt": {
-                  "style": "form"
-                },
-                "User.Cart.User.UpdatedAt": {
-                  "style": "form"
-                },
-                "User.Cart.User.Cart": {
-                  "style": "form"
-                },
-                "User.Cart.User.News": {
-                  "style": "form"
-                },
-                "User.Cart.User.Orders": {
-                  "style": "form"
-                },
-                "User.Cart.User.Reviews": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.UserId": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.FullName": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.Phone": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.Address": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.Avatar": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.UserId": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.Email": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.PasswordHash": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.Role": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.Status": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.CreatedAt": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.UpdatedAt": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.Cart": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.News": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.Orders": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.Reviews": {
-                  "style": "form"
-                },
-                "User.Cart.User.UserProfile.User.UserProfile": {
-                  "style": "form"
-                },
-                "User.News": {
-                  "style": "form"
-                },
-                "User.Orders": {
-                  "style": "form"
-                },
-                "User.Reviews": {
-                  "style": "form"
-                },
-                "User.UserProfile.UserId": {
-                  "style": "form"
-                },
-                "User.UserProfile.FullName": {
-                  "style": "form"
-                },
-                "User.UserProfile.Phone": {
-                  "style": "form"
-                },
-                "User.UserProfile.Address": {
-                  "style": "form"
-                },
-                "User.UserProfile.Avatar": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.UserId": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Email": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.PasswordHash": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Role": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Status": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.CreatedAt": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.UpdatedAt": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.CartId": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.UserId": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.CreatedAt": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.CartItems": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.UserId": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.Email": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.PasswordHash": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.Role": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.Status": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.CreatedAt": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.UpdatedAt": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.Cart": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.News": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.Orders": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.Reviews": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Cart.User.UserProfile": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.News": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Orders": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.Reviews": {
-                  "style": "form"
-                },
-                "User.UserProfile.User.UserProfile": {
                   "style": "form"
                 },
                 "thumbnail": {
@@ -1960,17 +826,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/OrderDetail"
+                "$ref": "#/components/schemas/CreateOrderDetailDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/OrderDetail"
+                "$ref": "#/components/schemas/CreateOrderDetailDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/OrderDetail"
+                "$ref": "#/components/schemas/CreateOrderDetailDto"
               }
             }
           }
@@ -2066,6 +932,48 @@
         }
       }
     },
+    "/api/Orders/{id}/status": {
+      "put": {
+        "tags": [
+          "Orders"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOrderStatusDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOrderStatusDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOrderStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Orders": {
       "get": {
         "tags": [
@@ -2085,21 +993,44 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Order"
+                "$ref": "#/components/schemas/CreateOrderDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Order"
+                "$ref": "#/components/schemas/CreateOrderDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Order"
+                "$ref": "#/components/schemas/CreateOrderDto"
               }
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Orders/user/{userId}": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -2210,17 +1141,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Payment"
+                "$ref": "#/components/schemas/CreatePaymentDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Payment"
+                "$ref": "#/components/schemas/CreatePaymentDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Payment"
+                "$ref": "#/components/schemas/CreatePaymentDto"
               }
             }
           }
@@ -2301,6 +1232,29 @@
         "parameters": [
           {
             "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Payments/ConfirmMomo/{orderId}": {
+      "patch": {
+        "tags": [
+          "Payments"
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
             "in": "path",
             "required": true,
             "schema": {
@@ -3151,6 +2105,121 @@
         }
       }
     },
+    "/api/User/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/User/{id}/change-password": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/User/{id}/reset-password": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordByAdminRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordByAdminRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordByAdminRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/UserProfile": {
       "get": {
         "tags": [
@@ -3231,19 +2300,38 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/UserProfile"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserProfile"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserProfile"
+                "type": "object",
+                "properties": {
+                  "FullName": {
+                    "type": "string"
+                  },
+                  "Phone": {
+                    "type": "string"
+                  },
+                  "Address": {
+                    "type": "string"
+                  },
+                  "AvatarFile": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "FullName": {
+                  "style": "form"
+                },
+                "Phone": {
+                  "style": "form"
+                },
+                "Address": {
+                  "style": "form"
+                },
+                "AvatarFile": {
+                  "style": "form"
+                }
               }
             }
           }
@@ -3279,6 +2367,24 @@
   },
   "components": {
     "schemas": {
+      "AddToCartDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "variantId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "Brand": {
         "type": "object",
         "properties": {
@@ -3398,37 +2504,130 @@
         },
         "additionalProperties": false
       },
-      "News": {
+      "ChangePasswordRequest": {
         "type": "object",
         "properties": {
-          "newsId": {
+          "oldPassword": {
+            "type": "string",
+            "nullable": true
+          },
+          "newPassword": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateMomoRequest": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "nullable": true
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "orderInfo": {
+            "type": "string",
+            "nullable": true
+          },
+          "redirectUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipnUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "extraData": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateOrderDetailDto": {
+        "type": "object",
+        "properties": {
+          "orderId": {
             "type": "integer",
             "format": "int32"
           },
-          "title": {
-            "maxLength": 255,
-            "minLength": 0,
+          "variantId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productName": {
             "type": "string",
             "nullable": true
           },
-          "content": {
+          "variantName": {
             "type": "string",
             "nullable": true
           },
-          "thumbnail": {
-            "maxLength": 255,
-            "minLength": 0,
+          "productImage": {
             "type": "string",
             "nullable": true
           },
-          "createdDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateOrderDto": {
+        "type": "object",
+        "properties": {
           "userId": {
             "type": "integer",
             "format": "int32"
+          },
+          "orderStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalAmount": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreatePaymentDto": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "paymentMethod": {
+            "type": "string",
+            "nullable": true
+          },
+          "paymentStatus": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3517,6 +2716,10 @@
           "orderId": {
             "type": "integer",
             "format": "int32"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
           },
           "paymentMethod": {
             "maxLength": 50,
@@ -3672,6 +2875,16 @@
         },
         "additionalProperties": false
       },
+      "ResetPasswordByAdminRequest": {
+        "type": "object",
+        "properties": {
+          "newPassword": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "Review": {
         "type": "object",
         "properties": {
@@ -3699,6 +2912,34 @@
           "reviewDate": {
             "type": "string",
             "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateCartItemDto": {
+        "type": "object",
+        "properties": {
+          "cartId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "variantId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateOrderStatusDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
             "nullable": true
           }
         },

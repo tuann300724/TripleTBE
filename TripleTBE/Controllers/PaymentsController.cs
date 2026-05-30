@@ -41,22 +41,41 @@ namespace TripleTBE.Controllers
         }
 
         // CREATE
+        // CREATE PAYMENT
         [HttpPost]
         public async Task<IActionResult> Create(
-            [FromBody] Payment payment)
+            [FromBody] CreatePaymentDto dto)
         {
-            payment.PaymentDate = DateTime.Now;
+            var order = await _context.Orders
+                .FirstOrDefaultAsync(x =>
+                    x.OrderId == dto.OrderId);
 
-            if (string.IsNullOrEmpty(payment.PaymentStatus))
+            if (order == null)
             {
-                payment.PaymentStatus = "Pending";
+                return BadRequest(new
+                {
+                    message = "Order not found"
+                });
             }
+
+            var payment = new Payment
+            {
+                OrderId = dto.OrderId,
+                Amount = dto.Amount,
+                PaymentMethod = dto.PaymentMethod,
+                PaymentStatus = dto.PaymentStatus,
+                PaymentDate = DateTime.Now
+            };
 
             _context.Payments.Add(payment);
 
             await _context.SaveChangesAsync();
 
-            return Ok(payment);
+            return Ok(new
+            {
+                message = "Create payment success",
+                data = payment
+            });
         }
 
         // UPDATE
@@ -122,5 +141,50 @@ namespace TripleTBE.Controllers
                 message = "Delete payment success"
             });
         }
+        // PATCH: api/Payments/ConfirmMomo/5
+        [HttpPatch("ConfirmMomo/{orderId}")]
+        public async Task<IActionResult> ConfirmMomoPayment(int orderId)
+        {
+            // 1. Tìm thông tin giao dịch theo OrderId
+            var payment = await _context.Payments
+                .FirstOrDefaultAsync(x => x.OrderId == orderId);
+
+            if (payment == null)
+            {
+                return NotFound(new { message = "Không tìm thấy thông tin thanh toán cho đơn hàng này." });
+            }
+
+            // 2. Cập nhật trạng thái thanh toán
+            payment.PaymentStatus = "Paid";
+            payment.PaymentDate = DateTime.Now;
+
+            // 3. Cập nhật đồng bộ trạng thái Đơn hàng (Order) sang "Processing" (Đang xử lý)
+            var order = await _context.Orders
+                .FirstOrDefaultAsync(x => x.OrderId == orderId);
+
+            if (order != null)
+            {
+                order.OrderStatus = "Processing";
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = "Cập nhật trạng thái thanh toán MoMo thành công!",
+                paymentStatus = payment.PaymentStatus,
+                orderStatus = order?.OrderStatus
+            });
+        }
+    }
+    public class CreatePaymentDto
+    {
+        public int OrderId { get; set; }
+
+        public decimal Amount { get; set; }
+
+        public string? PaymentMethod { get; set; }
+
+        public string? PaymentStatus { get; set; }
     }
 }
