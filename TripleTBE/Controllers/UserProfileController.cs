@@ -9,10 +9,10 @@ namespace TripleTBE.Controllers
     [ApiController]
     public class UserProfileController : ControllerBase
     {
-        private readonly BadmintonStoreDbContext _context;
+        private readonly BadmintonDbContext _context;
         private readonly IWebHostEnvironment _env; // Thêm biến này
 
-        public UserProfileController(BadmintonStoreDbContext context, IWebHostEnvironment env)
+        public UserProfileController(BadmintonDbContext context, IWebHostEnvironment env)
         {
             _context = context;
             _env = env; // Gán giá trị từ DI

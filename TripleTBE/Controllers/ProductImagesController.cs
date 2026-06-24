@@ -8,12 +8,12 @@ namespace TripleTBE.Controllers
     [ApiController]
     public class ProductImagesController : ControllerBase
     {
-        private readonly BadmintonStoreDbContext _context;
+        private readonly BadmintonDbContext _context;
         private readonly IWebHostEnvironment _env;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public ProductImagesController(
-            BadmintonStoreDbContext context,
+            BadmintonDbContext context,
             IWebHostEnvironment env,
             IHttpContextAccessor httpContextAccessor)
         {

@@ -7,9 +7,9 @@ namespace TripleTBE.Repositories.Implementations
 {
     public class CartRepository : ICartRepository
     {
-        private readonly BadmintonStoreDbContext _context;
+        private readonly BadmintonDbContext _context;
 
-        public CartRepository(BadmintonStoreDbContext context)
+        public CartRepository(BadmintonDbContext context)
         {
             _context = context;
         }

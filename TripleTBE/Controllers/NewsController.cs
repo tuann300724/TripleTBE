@@ -8,12 +8,12 @@ namespace TripleTBE.Controllers
     [ApiController]
     public class NewsController : ControllerBase
     {
-        private readonly BadmintonStoreDbContext _context;
+        private readonly BadmintonDbContext _context;
         private readonly IWebHostEnvironment _env;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public NewsController(
-            BadmintonStoreDbContext context,
+            BadmintonDbContext context,
             IWebHostEnvironment env,
             IHttpContextAccessor httpContextAccessor)
         {

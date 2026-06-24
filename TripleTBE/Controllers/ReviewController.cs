@@ -9,9 +9,9 @@ namespace TripleTBE.Controllers
     [ApiController]
     public class ReviewController : ControllerBase
     {
-        private readonly BadmintonStoreDbContext _context;
+        private readonly BadmintonDbContext _context;
 
-        public ReviewController(BadmintonStoreDbContext context)
+        public ReviewController(BadmintonDbContext context)
         {
             _context = context;
         }

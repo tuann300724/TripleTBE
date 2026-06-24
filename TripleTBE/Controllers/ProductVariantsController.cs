@@ -8,10 +8,10 @@ namespace TripleTBE.Controllers
     [ApiController]
     public class ProductVariantsController : ControllerBase
     {
-        private readonly BadmintonStoreDbContext _context;
+        private readonly BadmintonDbContext _context;
 
         public ProductVariantsController(
-            BadmintonStoreDbContext context)
+            BadmintonDbContext context)
         {
             _context = context;
         }

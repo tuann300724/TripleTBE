@@ -10,9 +10,9 @@ namespace TripleTBE.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly BadmintonStoreDbContext _context;
+        private readonly BadmintonDbContext _context;
 
-        public UserController(BadmintonStoreDbContext context)
+        public UserController(BadmintonDbContext context)
         {
             _context = context;
         }

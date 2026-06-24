@@ -9,11 +9,11 @@ namespace TripleTBE.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly BadmintonStoreDbContext _context;
+        private readonly BadmintonDbContext _context;
         private readonly IWebHostEnvironment _env;
         private readonly IHttpContextAccessor _httpContextAccessor;
         public ProductRepository(
-              BadmintonStoreDbContext context,
+              BadmintonDbContext context,
               IWebHostEnvironment env,
               IHttpContextAccessor httpContextAccessor)
         {

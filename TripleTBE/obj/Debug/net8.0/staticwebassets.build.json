@@ -1,1 +1,19 @@
-{"Version":1,"Hash":"gaJDoOGW1troE/+VGomsxdPM4Xh9bAdSGSo57Pk7axg=","Source":"TripleTBE","BasePath":"_content/TripleTBE","Mode":"Default","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[{"Name":"TripleTBE\\wwwroot","Source":"TripleTBE","ContentRoot":"E:\\Be\\TripleTBE\\TripleTBE\\wwwroot\\","BasePath":"_content/TripleTBE","Pattern":"**"}],"Assets":[],"Endpoints":[]}
+{
+  "Version": 1,
+  "Hash": "lpiIAhzHNIWzbBL6RZMNERCns0FT5XgPdSvzZEe/mXM=",
+  "Source": "TripleTBE",
+  "BasePath": "_content/TripleTBE",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "TripleTBE\\wwwroot",
+      "Source": "TripleTBE",
+      "ContentRoot": "E:\\tripleT\\TripleTBE\\TripleTBE\\wwwroot\\",
+      "BasePath": "_content/TripleTBE",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": []
+}

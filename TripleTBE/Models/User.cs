@@ -52,4 +52,33 @@ public partial class User
     [InverseProperty("User")]
     [JsonIgnore]
     public virtual UserProfile? UserProfile { get; set; }
+
+    /* =========================================================
+       NỘI DUNG BỔ SUNG: COURT BOOKINGS & CHATTING
+    ========================================================= */
+
+    // Danh sách các sân mà User này sở hữu (Dành cho Role = 'CourtOwner')
+    [InverseProperty("Owner")]
+    [JsonIgnore]
+    public virtual ICollection<Court> Courts { get; set; } = new List<Court>();
+
+    // Danh sách đơn đặt sân của User này (Dành cho Role = 'Customer')
+    [InverseProperty("User")]
+    [JsonIgnore]
+    public virtual ICollection<CourtBooking> CourtBookings { get; set; } = new List<CourtBooking>();
+
+    // Các phòng chat với tư cách là Khách hàng mua/đặt sân
+    [InverseProperty("Customer")]
+    [JsonIgnore]
+    public virtual ICollection<ChatRoom> CustomerChatRooms { get; set; } = new List<ChatRoom>();
+
+    // Các phòng chat với tư cách là Chủ sân hỗ trợ khách
+    [InverseProperty("Owner")]
+    [JsonIgnore]
+    public virtual ICollection<ChatRoom> OwnerChatRooms { get; set; } = new List<ChatRoom>();
+
+    // Tất cả tin nhắn mà User này đã gửi đi
+    [InverseProperty("Sender")]
+    [JsonIgnore]
+    public virtual ICollection<ChatMessage> ChatMessages { get; set; } = new List<ChatMessage>();
 }

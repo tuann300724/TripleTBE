@@ -8,12 +8,12 @@ namespace TripleTBE.Repositories.Implementations
 {
     public class BrandRepository : IBrandRepository
     {
-        private readonly BadmintonStoreDbContext _context;
+        private readonly BadmintonDbContext _context;
         private readonly IWebHostEnvironment _env;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public BrandRepository(
-            BadmintonStoreDbContext context,
+            BadmintonDbContext context,
             IWebHostEnvironment env,
             IHttpContextAccessor httpContextAccessor)
         {

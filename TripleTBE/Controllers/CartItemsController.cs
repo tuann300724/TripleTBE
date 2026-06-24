@@ -8,9 +8,9 @@ namespace TripleTBE.Controllers
     [ApiController]
     public class CartItemsController : ControllerBase
     {
-        private readonly BadmintonStoreDbContext _context;
+        private readonly BadmintonDbContext _context;
 
-        public CartItemsController(BadmintonStoreDbContext context)
+        public CartItemsController(BadmintonDbContext context)
         {
             _context = context;
         }
