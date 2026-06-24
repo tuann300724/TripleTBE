@@ -22,12 +22,26 @@ namespace TripleTBE.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        // GET ALL
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var news = await _context.News
-                .Include(x => x.User)
+                .Select(x => new
+                {
+                    x.NewsId,
+                    x.Title,
+                    x.Content,
+                    x.Thumbnail,
+                    x.CreatedDate,
+                    x.UserId,
+                    User = x.User != null ? new
+                    {
+                        x.User.UserId,
+                        x.User.Email,
+                        x.User.Role,
+                        x.User.Status
+                    } : null
+                })
                 .ToListAsync();
 
             return Ok(news);
@@ -38,8 +52,24 @@ namespace TripleTBE.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var news = await _context.News
-                .Include(x => x.User)
-                .FirstOrDefaultAsync(x => x.NewsId == id);
+                .Where(x => x.NewsId == id)
+                .Select(x => new
+                {
+                    x.NewsId,
+                    x.Title,
+                    x.Content,
+                    x.Thumbnail,
+                    x.CreatedDate,
+                    x.UserId,
+                    User = x.User != null ? new
+                    {
+                        x.User.UserId,
+                        x.User.Email,
+                        x.User.Role,
+                        x.User.Status
+                    } : null
+                })
+                .FirstOrDefaultAsync();
 
             if (news == null)
                 return NotFound();
@@ -50,36 +80,41 @@ namespace TripleTBE.Controllers
         // CREATE
         [HttpPost]
         public async Task<IActionResult> Create(
-            [FromForm] News news,
+            [FromForm] CreateNewsDto dto, // Thay đổi ở đây
             IFormFile? thumbnail)
         {
             var request = _httpContextAccessor.HttpContext!.Request;
 
-            // upload thumbnail
+            // Ánh xạ từ DTO sang Entity chính
+            var news = new News
+            {
+                Title = dto.Title,
+                Content = dto.Content,
+                UserId = dto.UserId,
+                CreatedDate = DateTime.Now
+            };
+
+            // Tải tập tin ảnh lên
             if (thumbnail != null)
             {
-                var fileName =
-                    Guid.NewGuid().ToString()
-                    + Path.GetExtension(thumbnail.FileName);
+                var folderPath = Path.Combine(_env.WebRootPath, "images/news");
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath); // Tự động tạo thư mục nếu chưa có
+                }
 
-                var filePath = Path.Combine(
-                    _env.WebRootPath,
-                    "images/news",
-                    fileName);
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(thumbnail.FileName);
+                var filePath = Path.Combine(folderPath, fileName);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await thumbnail.CopyToAsync(stream);
                 }
 
-                news.Thumbnail =
-                    $"{request.Scheme}://{request.Host}/images/news/{fileName}";
+                news.Thumbnail = $"{request.Scheme}://{request.Host}/images/news/{fileName}";
             }
 
-            news.CreatedDate = DateTime.Now;
-
             _context.News.Add(news);
-
             await _context.SaveChangesAsync();
 
             return Ok(news);
@@ -89,75 +124,66 @@ namespace TripleTBE.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(
             int id,
-            [FromForm] News updatedNews,
+            [FromForm] UpdateNewsDto dto, // Thay đổi ở đây
             IFormFile? thumbnail)
         {
             var request = _httpContextAccessor.HttpContext!.Request;
 
-            var news = await _context.News
-                .FirstOrDefaultAsync(x => x.NewsId == id);
-
+            var news = await _context.News.FirstOrDefaultAsync(x => x.NewsId == id);
             if (news == null)
                 return NotFound();
 
-            // update data
-            if (!string.IsNullOrEmpty(updatedNews.Title))
+            // Cập nhật dữ liệu từ DTO nếu có truyền lên
+            if (!string.IsNullOrEmpty(dto.Title))
             {
-                news.Title = updatedNews.Title;
+                news.Title = dto.Title;
             }
 
-            if (!string.IsNullOrEmpty(updatedNews.Content))
+            if (!string.IsNullOrEmpty(dto.Content))
             {
-                news.Content = updatedNews.Content;
+                news.Content = dto.Content;
             }
 
-            if (updatedNews.UserId > 0)
+            if (dto.UserId.HasValue && dto.UserId > 0)
             {
-                news.UserId = updatedNews.UserId;
+                news.UserId = dto.UserId.Value;
             }
 
-            // update thumbnail
+            // Xử lý cập nhật ảnh đại diện
             if (thumbnail != null)
             {
-                // delete old image
+                var folderPath = Path.Combine(_env.WebRootPath, "images/news");
+
+                // Xóa ảnh cũ
                 if (!string.IsNullOrEmpty(news.Thumbnail))
                 {
-                    var oldImageName =
-                        Path.GetFileName(news.Thumbnail);
+                    var oldImageName = Path.GetFileName(news.Thumbnail);
+                    var oldImagePath = Path.Combine(folderPath, oldImageName);
 
-                    var oldImagePath = Path.Combine(
-                        _env.WebRootPath,
-                        "images/news",
-                        oldImageName);
-
-                    if (System.IO.File.Exists(oldImagePath)
-)
+                    if (System.IO.File.Exists(oldImagePath))
                     {
                         System.IO.File.Delete(oldImagePath);
                     }
                 }
 
-                // save new image
-                var fileName =
-                    Guid.NewGuid().ToString()
-                    + Path.GetExtension(thumbnail.FileName);
+                // Lưu ảnh mới
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
 
-                var filePath = Path.Combine(
-                    _env.WebRootPath,
-                    "images/news",
-                    fileName);
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(thumbnail.FileName);
+                var filePath = Path.Combine(folderPath, fileName);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await thumbnail.CopyToAsync(stream);
                 }
 
-                news.Thumbnail =
-                    $"{request.Scheme}://{request.Host}/images/news/{fileName}";
+                news.Thumbnail = $"{request.Scheme}://{request.Host}/images/news/{fileName}";
             }
 
             await _context.SaveChangesAsync();
-
             return Ok(news);
         }
 
@@ -165,22 +191,15 @@ namespace TripleTBE.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var news = await _context.News
-                .FirstOrDefaultAsync(x => x.NewsId == id);
-
+            var news = await _context.News.FirstOrDefaultAsync(x => x.NewsId == id);
             if (news == null)
                 return NotFound();
 
-            // delete image
+            // Xóa ảnh khi xóa bài viết
             if (!string.IsNullOrEmpty(news.Thumbnail))
             {
-                var imageName =
-                    Path.GetFileName(news.Thumbnail);
-
-                var imagePath = Path.Combine(
-                    _env.WebRootPath,
-                    "images/news",
-                    imageName);
+                var imageName = Path.GetFileName(news.Thumbnail);
+                var imagePath = Path.Combine(_env.WebRootPath, "images/news", imageName);
 
                 if (System.IO.File.Exists(imagePath))
                 {
@@ -189,13 +208,23 @@ namespace TripleTBE.Controllers
             }
 
             _context.News.Remove(news);
-
             await _context.SaveChangesAsync();
 
-            return Ok(new
-            {
-                message = "Delete news success"
-            });
+            return Ok(new { message = "Delete news success" });
         }
+    }
+    public class CreateNewsDto
+    {
+        public string Title { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
+        public int UserId { get; set; }
+    }
+
+    // DTO dùng cho việc Cập nhật
+    public class UpdateNewsDto
+    {
+        public string? Title { get; set; }
+        public string? Content { get; set; }
+        public int? UserId { get; set; }
     }
 }

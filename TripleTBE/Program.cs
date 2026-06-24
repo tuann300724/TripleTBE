@@ -1,18 +1,22 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TripleTBE.Models;
 using TripleTBE.Repositories;
 using TripleTBE.Repositories.Implementations;
 using TripleTBE.Repositories.Interfaces;
-var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container. 
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    Args = args,
+    WebRootPath = "wwwroot"
+});
+// Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.WebHost.UseWebRoot("wwwroot");
+
 builder.Services.AddDbContext<BadmintonDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
@@ -43,10 +47,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();   
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseCors("AllowAll");     
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 
