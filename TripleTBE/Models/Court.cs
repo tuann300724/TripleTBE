@@ -29,6 +29,17 @@ public partial class Court
 
     public int OwnerId { get; set; }
 
+    // --- THUỘC TÍNH MỚI BỔ SUNG ---
+    [StringLength(50)]
+    public string Latitude { get; set; } = null!;
+
+    [StringLength(50)]
+    public string Longitude { get; set; } = null!;
+
+    [Column(TypeName = "decimal(2,1)")]
+    public decimal? Rating { get; set; } = 0m;
+    // ------------------------------
+
     [Column(TypeName = "datetime")]
     public DateTime? CreatedAt { get; set; } = DateTime.Now;
 
@@ -45,4 +56,6 @@ public partial class Court
 
     [InverseProperty("Court")]
     public virtual ICollection<CourtTimeSlot> CourtTimeSlots { get; set; } = new List<CourtTimeSlot>();
+    [InverseProperty("Court")]
+    public virtual ICollection<CourtReview> CourtReviews { get; set; } = new List<CourtReview>();
 }

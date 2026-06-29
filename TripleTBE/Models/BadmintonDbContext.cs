@@ -30,6 +30,7 @@ public partial class BadmintonDbContext : DbContext
 
     // --- THÊM CÁC ĐỐI TƯỢNG ĐẶT SÂN & CHAT VÀO ĐÂY ---
     public virtual DbSet<Court> Courts { get; set; }
+    public virtual DbSet<CourtReview> CourtReviews { get; set; }
     public virtual DbSet<CourtSubItem> CourtSubItems { get; set; }
     public virtual DbSet<CourtTimeSlot> CourtTimeSlots { get; set; }
     public virtual DbSet<CourtBooking> CourtBookings { get; set; }
@@ -266,15 +267,40 @@ public partial class BadmintonDbContext : DbContext
             entity.HasKey(e => e.CourtId);
             entity.Property(e => e.IsApproved).HasDefaultValue(false);
             entity.Property(e => e.Status).HasDefaultValue("Active");
+
+            // Cấu hình cho thuộc tính mới thêm
+            entity.Property(e => e.Rating)
+                .HasColumnType("decimal(2,1)")
+                .HasDefaultValue(0m);
+
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.UpdatedAt).HasDefaultValueSql("(getdate())");
 
             entity.HasOne(d => d.Owner)
-                .WithMany(p => p.Courts) 
+                .WithMany(p => p.Courts)
                 .HasForeignKey(d => d.OwnerId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
+        /* =========================================================
+           COURT REVIEW
+        ========================================================= */
+        modelBuilder.Entity<CourtReview>(entity =>
+        {
+            entity.HasKey(e => e.ReviewId);
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
 
+            // Cấu hình mối quan hệ với Court
+            entity.HasOne(d => d.Court)
+                .WithMany(p => p.CourtReviews)
+                .HasForeignKey(d => d.CourtId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Cấu hình mối quan hệ với User rõ ràng bằng Fluent API
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.CourtReviews) // Trỏ tới User.CourtReviews
+                .HasForeignKey(d => d.UserId)  // Khóa ngoại là UserId
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
         modelBuilder.Entity<CourtSubItem>(entity =>
         {
             entity.HasKey(e => e.SubCourtId);

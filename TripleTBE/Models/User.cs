@@ -81,4 +81,8 @@ public partial class User
     [InverseProperty("Sender")]
     [JsonIgnore]
     public virtual ICollection<ChatMessage> ChatMessages { get; set; } = new List<ChatMessage>();
+    [JsonIgnore]
+    public virtual ICollection<CourtReview> CourtReviews { get; set; }
+       = new List<CourtReview>();
+
 }
